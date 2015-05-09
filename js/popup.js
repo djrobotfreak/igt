@@ -1,6 +1,6 @@
 var myApp = angular.module('myApp',[]);
 
-myApp.controller('RespokeController', ['$scope', function($scope) {
+myApp.controller('RespokeController', function($scope) {
    $scope.connected = false;
     $scope.activeCall = null;
     $scope.username = "";
@@ -63,7 +63,7 @@ myApp.controller('RespokeController', ['$scope', function($scope) {
         $scope.activeCall.hangup();
         $scope.activeCall = null;
     };
-}]);
+});
 
 function setVideo(elementId, videoElement) {
     var videoParent = document.getElementById(elementId);
