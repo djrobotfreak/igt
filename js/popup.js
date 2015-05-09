@@ -86,6 +86,7 @@ function setVideo(elementId, videoElement) {
     videoParent.innerHTML = "";
     videoParent.appendChild(videoElement);
 }
+<<<<<<< HEAD
 
 // client.listen('message', function(evt) {
 //     $("#messages").append(
@@ -115,3 +116,5 @@ $("#sendMessage").click(function (){
     // clear the text you just sent
     $("#textToSend").val('');
 });
+=======
+>>>>>>> origin/master
