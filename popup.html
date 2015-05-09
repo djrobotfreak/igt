@@ -9,7 +9,7 @@
     <script src="js/respoke.js"></script>
     <script src="js/popup.js"></script>
   </head>
-  <body ng-app="myApp">
+  <body ng-app="myApp" ng-csp>
   
     <div ng-controller="RespokeController">
         <h3 ng-show="connected">
@@ -29,17 +29,6 @@
 
         <div id="remoteVideoSource"></div>
         <div id="localVideoSource"></div>
-        
-        
-        
-        <div id="messaging">
-              <ul id="messages"></ul><br />
-              Send To:
-              <input id="remoteId" type="text" /><br />
-              <textarea id="textToSend" rows="2"></textarea><br />
-              <input id='sendMessage' type='button' value='Send Message' />
-        </div>
-        
         
     </div>
 

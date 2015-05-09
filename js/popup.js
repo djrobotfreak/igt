@@ -72,32 +72,3 @@ function setVideo(elementId, videoElement) {
     videoParent.innerHTML = "";
     videoParent.appendChild(videoElement);
 }
-
-client.listen('message', function(evt) {
-    $("#messages").append(
-        "<li>" + evt.message.message + "</li>"
-    );
-});
-
-$("#sendMessage").click(function (){
-
-    // get the recipient name
-    var remote = $("#remoteId").val();
-
-    // make an endpoint for that recipient
-    var endpoint = client.getEndpoint({ id: remote });
-
-    // grab the text to send
-    var messageText = $("#textToSend").val();
-
-    // send it
-    endpoint.sendMessage({ message : messageText });
-
-    // show yourself the message
-    $("#messages").append(
-        "<li>" + messageText + "</li>"
-    );
-
-    // clear the text you just sent
-    $("#textToSend").val('');
-});
