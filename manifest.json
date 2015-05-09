@@ -8,12 +8,9 @@
       "scripts": ["background.js"]
     }
   },
-<<<<<<< HEAD
+  "icons": { "16": "icon.png", "128": "icon.png" },  
   "permissions": [
     "https://ajax.googleapis.com/",
     "tts" 
-  ]
-=======
-  "icons": { "16": "icon.png", "128": "icon.png" }
->>>>>>> origin/master
+    ]
 }

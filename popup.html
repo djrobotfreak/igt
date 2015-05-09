@@ -14,9 +14,10 @@
     <script src="js/computerspeak.js"></script>
   </head>
   <body ng-app="myApp" ng-csp>
-      <button ng-click="testTranslate()">Test Translate</button>
-    <p>{{output}}</p>
+      
     <div ng-controller="RespokeController">
+    <button ng-click="testTranslate()">Test Translate</button>
+    <p>{{output}}</p>
         <h3 ng-show="connected">
             Connected as {{username}}
         </h3>
