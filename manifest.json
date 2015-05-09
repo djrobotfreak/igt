@@ -1,15 +1,19 @@
 {
+  "name": "Inter-Galactic Translator",
+  "description": "For AngelHack 2015",
+  "version": "0.1",
   "manifest_version": 2,
-
-  "name": "Getting started example",
-  "description": "This extension shows a Google Image search result for the current page",
-  "version": "1.0",
-
-  "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "popup.html"
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
   },
+<<<<<<< HEAD
   "permissions": [
-    "https://ajax.googleapis.com/"
+    "https://ajax.googleapis.com/",
+    "tts" 
   ]
+=======
+  "icons": { "16": "icon.png", "128": "icon.png" }
+>>>>>>> origin/master
 }

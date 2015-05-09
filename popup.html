@@ -3,13 +3,16 @@
   <head>
     <title>Inter-Galactic Translation App</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/csp.css">
+    <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/angular.min.js"></script>
     <script src="js/uirouter.js"></script>
     <script src="js/respoke.js"></script>
     <script src="js/popup.js"></script>
   </head>
-  <body ng-app="myApp">
-  
+  <body ng-app="myApp" ng-csp>
+      <button ng-click="testTranslate()">Test Translate</button>
+    <p>{{output}}</p>
     <div ng-controller="RespokeController">
         <h3 ng-show="connected">
             Connected as {{username}}
@@ -28,6 +31,7 @@
 
         <div id="remoteVideoSource"></div>
         <div id="localVideoSource"></div>
+        
     </div>
 
   </body>

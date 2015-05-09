@@ -1,7 +1,7 @@
 var myApp = angular.module('myApp',[]);
 
 
-myApp.controller('RespokeController', function($scope) {
+myApp.controller('RespokeController', function($scope, $http) {
 
    $scope.connected = false;
     $scope.activeCall = null;
@@ -65,6 +65,20 @@ myApp.controller('RespokeController', function($scope) {
         $scope.activeCall.hangup();
         $scope.activeCall = null;
     };
+
+
+    $scope.testTranslate = function(){
+        console.log('sending...');
+        $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q=hello%20world&source=en&target=es")
+        .success(function(data){
+            console.log('it worked!')
+            $scope.output = data;
+        })
+        .error(function(data){
+            console.log('it broke :(');
+        })
+
+    }
 });
 
 function setVideo(elementId, videoElement) {
