@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Inter-Galactic Translation App</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/angular.min.js"></script>
+    <script src="js/uirouter.js"></script>
+    <script src="js/respoke.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/latinize.js"></script>
+    <script src="js/computerspeak.js"></script>
+  </head>
+  <body ng-app="myApp">
+    <div ng-controller="RespokeController">
+        <h3 ng-show="connected">
+            Connected as {{username}}
+        </h3>
+
+        <div ng-show="!connected">
+            <input placeholder="My Username" ng-model="username" type="text" autofocus />
+            <button ng-click="connect()">Connect</button>
+        </div>
+
+        <div ng-show="connected">
+            <input placeholder="User to call" ng-model="friendId" type="text" autofocus ng-show="!activeCall" />
+            <button ng-click="call()" ng-show="!activeCall">Call</button>
+            <button ng-click="hangup()" ng-show="activeCall">Hang up</button>
+        </div>
+
+        <div id="remoteVideoSource"></div>
+        <div id="localVideoSource"></div>
+    </div>
+    <div class="compact marquee">
+        <div id="info">
+          <p id="info_start">
+            Click on the microphone icon and begin speaking for as long as you like.
+          </p>
+          <p id="info_speak_now" style="display:none">
+            Speak now.
+          </p>
+          <p id="info_no_speech" style="display:none">
+            No speech was detected. You may need to adjust your <a href=
+            "//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">microphone
+            settings</a>.
+          </p>
+          <p id="info_no_microphone" style="display:none">
+            No microphone was found. Ensure that a microphone is installed and that
+            <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+            microphone settings</a> are configured correctly.
+          </p>
+          <p id="info_allow" style="display:none">
+            Click the "Allow" button above to enable your microphone.
+          </p>
+          <p id="info_denied" style="display:none">
+            Permission to use microphone was denied.
+          </p>
+          <p id="info_blocked" style="display:none">
+            Permission to use microphone is blocked. To change, go to
+            chrome://settings/contentExceptions#media-stream
+          </p>
+          <p id="info_upgrade" style="display:none">
+            Web Speech API is not supported by this browser. Upgrade to <a href=
+            "//www.google.com/chrome">Chrome</a> version 25 or later.
+          </p>
+        </div>
+        <div id="div_start">
+          <button id="start_button" onclick="startButton(event)"><img alt="Start" id="start_img"
+          src="https://www.google.com/intl/en/chrome/assets/common/images/content/mic.gif"></button>
+        </div>
+        <div id="results">
+          <span class="final" id="final_span"></span> <span class="interim" id=
+          "interim_span"></span>
+        </div>
+        <div class="compact marquee" id="div_language">
+          <select id="select_language" onchange="updateCountry()">
+            </select>&nbsp;&nbsp; <select id="select_dialect">
+            </select>
+        </div>
+      </div>
+    </div> 
+    <script src="js/rtt.js"></script>
+  </body>
+</html>
