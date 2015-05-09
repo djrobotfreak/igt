@@ -62,6 +62,14 @@ myApp.controller('RespokeController', function($scope, $http) {
         });
     };
     
+    $scope.disconnect = function() {
+        $scope.client.disconnect({
+            endpointId: $scope.username
+        });
+        $scope.connected = false;
+        $scope.$apply();
+    };
+    
     $scope.call = function() {
         var recipientEndpoint = $scope.client.getEndpoint({ id: $scope.friendId });
         $scope.activeCall = recipientEndpoint.startVideoCall(callOptions);
