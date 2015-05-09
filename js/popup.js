@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp',[]);
+var myApp = angular.module('myApp',['ngMaterial']);
 
 myApp.controller('RespokeController', function($scope, $http) {
 
