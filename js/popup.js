@@ -1,12 +1,7 @@
-function setVideo(elementId, videoElement) {
-    var videoParent = document.getElementById(elementId);
-    videoParent.innerHTML = "";
-    videoParent.appendChild(videoElement);
-}
+var myApp = angular.module('myApp',[]);
 
-function RespokeController($scope) {
-    
-    $scope.connected = false;
+myApp.controller('RespokeController', ['$scope', function($scope) {
+   $scope.connected = false;
     $scope.activeCall = null;
     $scope.username = "";
     $scope.friendId = "";
@@ -68,5 +63,10 @@ function RespokeController($scope) {
         $scope.activeCall.hangup();
         $scope.activeCall = null;
     };
-    
+}]);
+
+function setVideo(elementId, videoElement) {
+    var videoParent = document.getElementById(elementId);
+    videoParent.innerHTML = "";
+    videoParent.appendChild(videoElement);
 }

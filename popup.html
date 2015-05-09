@@ -1,40 +1,35 @@
 <!doctype html>
-<!--
- This page is shown when the extension button is clicked, because the
- "browser_action" field in manifest.json contains the "default_popup" key with
- value "popup.html".
- -->
 <html>
   <head>
-    <title>Getting Started Extension's Popup</title>
+    <title>Inter-Galactic Translation App</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/respoke.js"></script>
     <script src="js/angular.min.js"></script>
+    <script src="js/respoke.js"></script>
     <script src="js/popup.js"></script>
   </head>
   <body ng-app>
   
-<div ng-controller="RespokeController">
-    
-    <h3 ng-show="connected">
-        Connected as {{username}}
-    </h3>
-    
-    <div ng-show="!connected">
-        <input placeholder="My Username" ng-model="username" type="text" autofocus />
-        <button ng-click="connect()">Connect</button>
+    <div ng-controller="RespokeController">
+
+        <h3 ng-show="connected">
+            Connected as {{username}}
+        </h3>
+
+        <div ng-show="!connected">
+            <input placeholder="My Username" ng-model="username" type="text" autofocus />
+            <button ng-click="connect()">Connect</button>
+        </div>
+
+        <div ng-show="connected">
+            <input placeholder="User to call" ng-model="friendId" type="text" autofocus ng-show="!activeCall" />
+            <button ng-click="call()" ng-show="!activeCall">Call</button>
+            <button ng-click="hangup()" ng-show="activeCall">Hang up</button>
+        </div>
+
+        <div id="remoteVideoSource"></div>
+        <div id="localVideoSource"></div>
+
     </div>
-    
-    <div ng-show="connected">
-        <input placeholder="User to call" ng-model="friendId" type="text" autofocus ng-show="!activeCall" />
-        <button ng-click="call()" ng-show="!activeCall">Call</button>
-        <button ng-click="hangup()" ng-show="activeCall">Hang up</button>
-    </div>
-    
-    <div id="remoteVideoSource"></div>
-    <div id="localVideoSource"></div>
-    
-</div>
 
   </body>
 </html>
