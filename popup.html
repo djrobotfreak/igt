@@ -23,6 +23,8 @@
         </h3>
 
         <div ng-show="!connected">
+            <select ng-options="item.short as item.name for item in languages" ng-model="language"></select>
+            <select ng-options="item.voiceName as item.voiceName for item in voices | langFilt:language" ng-model="voice"></select>
             <input placeholder="My Username" ng-model="username" type="text" autofocus />
             <button ng-click="connect()">Connect</button>
         </div>

@@ -1,6 +1,5 @@
 var myApp = angular.module('myApp',[]);
 
-
 myApp.controller('RespokeController', function($scope, $http) {
 
     $scope.connected = false;
@@ -19,8 +18,15 @@ myApp.controller('RespokeController', function($scope, $http) {
         }
         
     };
-    
-    
+    $scope.languages = [
+    {"name": "english", "short": "en"},
+    {"name": "espanol", "short": "es"}
+    ];
+    chrome.tts.getVoices(
+          function(voices) {
+            $scope.voices = voices;
+          });
+
     $scope.client = new respoke.Client({
         appId: "2a56901d-78ca-4436-b698-4a7a66cdc1fc",
         baseURL: "https://api.respoke.io",
@@ -69,16 +75,40 @@ myApp.controller('RespokeController', function($scope, $http) {
 
     $scope.testTranslate = function(){
         console.log('sending...');
-        $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q=hello%20world&source=en&target=es")
+        var text = "Hola, me gusta Nicaragua";
+        $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q="+encodeURI(text)+"&source=es&target=en")
         .success(function(data){
             console.log('it worked!');
             $scope.output = data.data.translations[0].translatedText;
+            chrome.tts.speak($scope.output, {'lang': 'en', 'voiceName': $scope.voice, 'rate': 1.3});
         })
         .error(function(data){
             console.log('it broke :(');
         });
     }
 });
+
+
+
+myApp.filter('langFilt', function(){
+    return function(objects, language){
+        var return_list = [];
+        console.log('objects', objects);
+        if (language){
+            console.log('language', language);
+            console.log('objects', objects);
+            for(var i = 0; i < objects.length; i++){
+                var item = objects[i];
+                if (item.lang.indexOf(language) != -1){
+                    return_list.push(item);
+                }
+            }
+        }
+        return return_list;
+    }
+})
+
+
 
 function setVideo(elementId, videoElement) {
     var videoParent = document.getElementById(elementId);
