@@ -37,8 +37,9 @@
 
 
         <div ng-show="!connected">
-            <select ng-options="item.short as item.name for item in languages" ng-model="language"></select>
-            <select ng-options="item.voiceName as item.voiceName for item in voices | langFilt:language" ng-model="voice"></select>
+            <select ng-options="item.short as item.name for item in languages" ng-model="lang_out"></select>
+            <select ng-options="item.short as item.name for item in languages" ng-model="lang_in"></select>
+            <select ng-options="item.voiceName as item.voiceName for item in voices | langFilt:lang_out" ng-model="voice"></select>
             <md-input-container>
               <label>Username</label>
               <input ng-model="username">
@@ -58,24 +59,59 @@
         <div id="remoteVideoSource"></div>
         <div id="localVideoSource"></div>
         
+        <button ng-click="toggle()"> start listening</button>
+        {{transcript}}
+        <button ng-click="testTranslate()">Test Translate</button>
+        <p>{{output}}</p>
         </md-content>
-        
     </div>
-    <button class="green">start</button>
-    <button class="red" disabled>stop</button>
-    <span style="margin-left: 10px">Accent: <select id="lang">
-        <option>de</option>
-        <option selected>en</option>
-        <option>es</option>
-        <option>fr</option>
-        <option>it</option>
-        <option>nl</option>
-        <option>zh</option>
-    </select></span>
-  <span id="status"></span>
-  
-  <button ng-click="testTranslate()">Test Translate</button>
-    <p>{{output}}</p>
+            <div class="compact marquee">
+            <div id="info">
+              <p id="info_start">
+                Click on the microphone icon and begin speaking for as long as you like.
+              </p>
+              <p id="info_speak_now" style="display:none">
+                Speak now.
+              </p>
+              <p id="info_no_speech" style="display:none">
+                No speech was detected. You may need to adjust your <a href=
+                "//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">microphone
+                settings</a>.
+              </p>
+              <p id="info_no_microphone" style="display:none">
+                No microphone was found. Ensure that a microphone is installed and that
+                <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
+                microphone settings</a> are configured correctly.
+              </p>
+              <p id="info_allow" style="display:none">
+                Click the "Allow" button above to enable your microphone.
+              </p>
+              <p id="info_denied" style="display:none">
+                Permission to use microphone was denied.
+              </p>
+              <p id="info_blocked" style="display:none">
+                Permission to use microphone is blocked. To change, go to
+                chrome://settings/contentExceptions#media-stream
+              </p>
+              <p id="info_upgrade" style="display:none">
+                Web Speech API is not supported by this browser. Upgrade to <a href=
+                "//www.google.com/chrome">Chrome</a> version 25 or later.
+              </p>
+            </div>
+            <div id="div_start">
+              <button id="start_button" onclick="startButton(event)"><img alt="Start" id="start_img"
+              src="images/mic.gif"></button>
+            </div>
+            <div id="results">
+              <span class="final" id="final_span"></span> <span class="interim" id=
+              "interim_span"></span>
+            </div>
+            <div class="compact marquee" id="div_language">
+              <select id="select_language" onchange="updateCountry()">
+                </select>&nbsp;&nbsp; <select id="select_dialect">
+                </select>
+            </div>
+        </div>
   
   <script src="js/rtt.js"></script>
   </body>
