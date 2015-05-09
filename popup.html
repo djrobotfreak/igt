@@ -24,16 +24,20 @@
       
     <div ng-controller="RespokeController">
     
-    
+        <md-toolbar ng-show="!connected">
+           <div class="md-toolbar-tools">
+            <h2 class="md-flex">Inter-Galactic Translation Service</h2>
+            </div>
+        </md-toolbar>
         <md-toolbar class="md-warn" ng-show="connected">
         <div class="md-toolbar-tools">
           <h2 class="md-flex">Connected as {{username}}</h2>
           <div flex></div>
-          <md-button ng-click="disconnect()">disconnect</md-button>
+          <md-button ng-click="disconnect()" aria-label="disconnect">disconnect</md-button>
         </div>
         </md-toolbar>
     
-        <md-content layout-padding style="height: 600px;padding: 24px;">
+        <md-content layout-padding>
 
 
         <div ng-show="!connected">
@@ -52,8 +56,8 @@
                 <label>User to Call</label>
                 <input ng-model="friendID" ng-show="!activeCall">
             </md-input-container>
-            <md-button ng-click="call()" ng-show="!activeCall"><i class="fa fa-phone"></i></md-button>
-            <md-button ng-click="hangup()" ng-show="activeCall">Hang up</md-button>
+            <md-button ng-click="call()" ng-show="!activeCall" aria-label="begin call"><i class="fa fa-phone"></i></md-button>
+            <md-button ng-click="hangup()" ng-show="activeCall" aria-label="end call">Hang up</md-button>
         </div>
 
         <div id="remoteVideoSource"></div>
