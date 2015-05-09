@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Inter-Galactic Translation App</title>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/csp.css">
     <script src="js/jquery-2.1.4.min.js"></script>
@@ -9,6 +10,8 @@
     <script src="js/uirouter.js"></script>
     <script src="js/respoke.js"></script>
     <script src="js/popup.js"></script>
+    <script src="js/latinize.js"></script>
+    <script src="js/computerspeak.js"></script>
   </head>
   <body ng-app="myApp" ng-csp>
       <button ng-click="testTranslate()">Test Translate</button>
@@ -33,6 +36,18 @@
         <div id="localVideoSource"></div>
         
     </div>
-
+    <button class="green">start</button>
+    <button class="red" disabled>stop</button>
+    <span style="margin-left: 10px">Accent: <select id="lang">
+        <option>de</option>
+        <option selected>en</option>
+        <option>es</option>
+        <option>fr</option>
+        <option>it</option>
+        <option>nl</option>
+        <option>zh</option>
+    </select></span>
+  <span id="status"></span>
+  <script src="js/rtt.js"></script>
   </body>
 </html>
