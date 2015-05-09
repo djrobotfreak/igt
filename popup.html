@@ -3,6 +3,7 @@
   <head>
     <title>Inter-Galactic Translation App</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/angular.min.js"></script>
     <script src="js/uirouter.js"></script>
     <script src="js/respoke.js"></script>
@@ -28,6 +29,18 @@
 
         <div id="remoteVideoSource"></div>
         <div id="localVideoSource"></div>
+        
+        
+        
+        <div id="messaging">
+              <ul id="messages"></ul><br />
+              Send To:
+              <input id="remoteId" type="text" /><br />
+              <textarea id="textToSend" rows="2"></textarea><br />
+              <input id='sendMessage' type='button' value='Send Message' />
+        </div>
+        
+        
     </div>
 
   </body>
