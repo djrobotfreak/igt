@@ -10,6 +10,7 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "https://ajax.googleapis.com/"
+    "https://ajax.googleapis.com/",
+    "tts" 
   ]
 }

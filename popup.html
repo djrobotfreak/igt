@@ -10,7 +10,8 @@
     <script src="js/popup.js"></script>
   </head>
   <body ng-app="myApp">
-  
+    <button ng-click="testTranslate()">Test Translate</button>
+    <p>{{output}}</p>
     <div ng-controller="RespokeController">
         <h3 ng-show="connected">
             Connected as {{username}}
