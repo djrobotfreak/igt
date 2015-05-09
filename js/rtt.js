@@ -60,7 +60,6 @@ var recogStatus = document.querySelector('#status');
     
       //computer.speak('test this out');
     });
-=======
 var langs =
 [['Afrikaans',       ['af-ZA']],
  ['Bahasa Indonesia',['id-ID']],
