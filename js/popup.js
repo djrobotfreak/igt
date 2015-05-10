@@ -183,7 +183,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
             $scope.output = data.data.translations[0].translatedText;
             console.log('Translated Text: ', $scope.output);
             var voice;
-            if data.lang_out == 'es'){
+            if (data.lang_out == 'es'){
                 voice = "Diego";
             }
             else if (data.lang_out == "en"){
