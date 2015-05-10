@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Inter-Galactic Translation App</title>
+    <title>Universal Video Translator</title>
 
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.min.css">
@@ -28,7 +28,7 @@
     
         <md-toolbar ng-show="!connected">
            <div class="md-toolbar-tools">
-            <h2 class="md-flex">Inter-Galactic Translation Service</h2>
+            <h2 class="md-flex">Universal Video Translator</h2>
             </div>
         </md-toolbar>
         <md-toolbar class="md-warn" ng-show="connected">
@@ -65,11 +65,14 @@
                     </md-select>
                 </div>
             </div>
-            <md-input-container>
+            
+            <div layout="row">
+            <md-input-container flex>
                <label>Username</label>
               <input ng-model="username">
             </md-input-container>
             <md-button class="md-primary md-raised" ng-click="connect()" ng-disabled = "!(gender && language && username)">Connect</md-button>
+            </div>
           
           
             
