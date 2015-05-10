@@ -6,6 +6,7 @@
 }
 .options > div {
   padding-right: 5px;
+  margin: 0px !important;
 }
 .options md-select-label {
   padding-top: 5px;
@@ -17,4 +18,7 @@
 .options md-toolbar .md-toolbar-tools {
   min-height: 40px;
   height: 40px;
+}
+.md-thumb-container {
+  z-index: 100;
 }

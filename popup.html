@@ -99,13 +99,13 @@
                     <md-switch ng-model="translating" aria-label="translating">
                     </md-switch>
                 </div>
-                <div layout="column">
+                <div layout="column" flex>
                    <md-toolbar>
                        <div class="md-toolbar-tools">
                             <h2 class="md-flex">Video Volume</h2>
                        </div>
                     </md-toolbar>
-                    <md-slider flex ng-show="translating" class="md-primary" md-discrete ng-model="volume" step=".1" min="0" max="1" aria-label="volume"></md-slider>
+                    <md-slider flex class="md-primary" md-discrete ng-model="volume" step=".1" min="0" max="1" aria-label="volume"></md-slider>
                 </div>
             </div>
         </div>
