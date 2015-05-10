@@ -7,3 +7,14 @@
 #options > div {
   padding-right: 5px;
 }
+#options md-select-label {
+  padding-top: 5px;
+}
+#options md-toolbar {
+  min-height: 40px;
+  font-size: 20px;
+}
+#options md-toolbar .md-toolbar-tools {
+  min-height: 40px;
+  height: 40px;
+}
