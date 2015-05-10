@@ -87,7 +87,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
         console.log('translating text: ', text);
         $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q="+encodeURI(text)+"&source="+$scope.lang_in+"&target="+$scope.lang_out)
         .success(function(data){
-            console.log('it worked!');
+            // console.log('it worked!');
             $scope.output = data.data.translations[0].translatedText;
             chrome.tts.speak($scope.output, {'lang': $scope.lang_out, 'voiceName': $scope.voice, 'rate': 1.0});
         })
@@ -132,13 +132,12 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
               } else {
                 showInfo('info_denied');
               }
-              ignore_onend = true;
             }
           };
 
           recognition.onend = function() {
             // recognizing = false;
-            console.log("I'm ending");
+            // console.log("I'm ending");
             recognition.start();
           };
           var timout;
@@ -208,13 +207,6 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
           }
           recognition.stop();
           recognizing = true;
-          ignore_onend = false;
-          // final_span.innerHTML = '';
-          // interim_span.innerHTML = '';
-          // start_img.src = 'images/mic-slash.gif';
-          // showInfo('info_allow');
-          // showButtons('none');
-          // start_timestamp = event.timeStamp;
         }
 });
 
@@ -242,25 +234,6 @@ function setVideo(elementId, videoElement) {
     videoParent.innerHTML = "";
     videoParent.appendChild(videoElement);
 }
-
-// for (var i = 0; i < langs.length; i++) {
-//   select_language.options[i] = new Option(langs[i][0], i);
-// }
-// select_language.selectedIndex = 7;
-// updateCountry();
-// select_dialect.selectedIndex = 6;
-// showInfo('info_start');
-
-// function updateCountry() {
-//   for (var i = select_dialect.options.length - 1; i >= 0; i--) {
-//     select_dialect.remove(i);
-//   }
-//   var list = langs[select_language.selectedIndex];
-//   for (var i = 1; i < list.length; i++) {
-//     select_dialect.options.add(new Option(list[i][1], list[i][0]));
-//   }
-//   select_dialect.style.visibility = list[1].length == 1 ? 'hidden' : 'visible';
-// }
 
 
 

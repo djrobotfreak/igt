@@ -13,6 +13,7 @@
     "https://ajax.googleapis.com/",
     "tts" ,
     "audioCapture",
-    "audio"
+    "audio",
+    "videoCapture"
     ]
 }
