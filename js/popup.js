@@ -121,13 +121,19 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     left: false,
     right: true
     };
+    
+    $scope.getToastPosition = function() {
+    return Object.keys($scope.toastPosition)
+      .filter(function(pos) { return $scope.toastPosition[pos]; })
+      .join(' ');
+  };
       
     $scope.incomingCall = function(name) {
     var toast = $mdToast.simple()
           .content('You have an incoming call!')
           .action('Answer')
           .highlightAction(true)
-          .position($scope.toastPosition)
+          .position($scope.getToastPosition())
         .hideDelay(8000);
     $mdToast.show(toast).then(function() {
         $scope.answer(name);
