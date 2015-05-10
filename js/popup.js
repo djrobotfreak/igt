@@ -182,7 +182,14 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         .success(function(data){
             $scope.output = data.data.translations[0].translatedText;
             console.log('Translated Text: ', $scope.output);
-            chrome.tts.speak($scope.output, {'lang': data.lang_out, 'gender': data.gender, 'rate': 1.0});
+            var voice;
+            if data.lang_out == 'es'){
+                voice = "Diego";
+            }
+            else if (data.lang_out == "en"){
+                voice = "Google Male UK";
+            }
+            chrome.tts.speak($scope.output, {'lang': data.lang_out, 'voiceName': voice, 'rate': 1.0});
         })
         .error(function(data){
             console.log('translation failed');
