@@ -96,7 +96,7 @@
         </div>
           
           
-                  <div id="remoteVideoSource"></div>
+        <div id="remoteVideoSource"></div>
         <div id="localVideoSource"></div>
                 
         <div layout="row">
@@ -116,7 +116,7 @@
 
         
         
-                  <md-input-container>
+                  <md-input-container ng-show="connected">
             <label>Enter message here</label>
             <input ng-model="message" ng-show="connected"></input>
           </md-input-container>
