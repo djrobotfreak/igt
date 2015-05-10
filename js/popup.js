@@ -140,6 +140,12 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     left: false,
     right: true
     };
+    
+    $scope.getToastPosition = function() {
+    return Object.keys($scope.toastPosition)
+      .filter(function(pos) { return $scope.toastPosition[pos]; })
+      .join(' ');
+  };
       
     $scope.incomingCall = function(name) {
     var toast = $mdToast.simple()
