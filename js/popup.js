@@ -91,6 +91,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         $scope.client.disconnect({
             endpointId: $scope.username
         });
+        socket.emit('TerminateConnection', '');
         $scope.connected = false;
         $scope.$apply();
     };
@@ -138,8 +139,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     });
 
     socket.on('IncomingCall', function(data){
-        $scope.incomingName = data.name;
-        $scope.incomingCall(name);
+        $scope.incomingCall(data.name);
     });
 
     socket.on('DroppedCall', function(data){
@@ -245,6 +245,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
                 }
                 if ($scope.transcript){
                     $scope.send($scope.transcript);
+                    console.log($scope.transcript);
 
                     // last_transcript = $scope.transcript;
                     interim_transcript = '';

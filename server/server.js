@@ -40,6 +40,11 @@ io.on('connection', function(socket){
 		console.log('language', data.language);
 		console.log('gender', data.gender);
 		var client = new Client(socket, data.name, data.language, data.gender);
+		for (var i = 0; i < clientList.length; i++){
+			if (clientList[i].name == data.name){
+				clientList[i].splice(i, 1);
+			}
+		}
 		clientList.push(client);
 		client.socket.emit('StartConnection', "");
 		// else{
