@@ -306,7 +306,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     }
 
     setup();
-    $scope.stopRecognition(){
+    $scope.stopRecognition = function(){
         if (regognizing){
             recognition.stop();
         }
