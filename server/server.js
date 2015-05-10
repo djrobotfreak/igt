@@ -35,8 +35,10 @@ io.on('connection', function(socket){
 	console.log('new connection');
 	socket.on('StartConnection', function (data) 
 	{
-		console.log('start');
+		console.log('New Connection');
 		console.log('name', data.name);
+		console.log('language', data.language);
+		console.log('voice', data.voice);
 		var client = new Client(socket, data.name, data.language, data.voice);
 		clientList.push(client);
 		client.socket.emit('StartConnection', "");
@@ -50,6 +52,7 @@ io.on('connection', function(socket){
 		// }
 	});
 	socket.on('Call', function(data){
+		console.log('Somebody is making a call');
 		var caller, receiver;
 		for (var i = 0; i < clientList.length; i++){
 			if (clientList[i].socket == socket){
@@ -71,6 +74,7 @@ io.on('connection', function(socket){
 		receiver.socket.emit("IncomingCall", JSON.stringify({"name": caller.name}));
 	});
 	socket.on('Answer', function(data){
+		console.log('sombody answered the call');
 		for (var i = 0; i < callList.length; i++){
 			if(callList[i].receiver.socket == socket){
 				callList[i].status = 'connected';
@@ -81,6 +85,7 @@ io.on('connection', function(socket){
 		}
 	});
 	socket.on('HangUp', function(data){
+		console.log('Somebody hung up');
 		for(var i = 0; i < callList[i].length; i++){
 			if (callList[i].receiver.socket == socket){
 				callList[i].caller.socket.emit("DroppedCall");
@@ -99,6 +104,7 @@ io.on('connection', function(socket){
 		}
 	});
 	socket.on('Message', function(data){
+		console.log('got a message', data.content)
 		for (var i = 0; i < callList.length; i++){
 			if (socket == callList[i].receiver.socket){
 				callList[i].caller.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].caller.language, "lang_to":callList[i].receiver.language, "voice": callList[i].caller.voice}));
@@ -111,6 +117,7 @@ io.on('connection', function(socket){
 		}
 	});
 	socket.on('TerminateConnection', function(data){
+		console.log('Somebody is terminating the connection');
 		for (var i = 0; i < clientList.length; i++){
 			if (clientList[i].socket == socket){
 				if (clientList[i].call != undefined){
