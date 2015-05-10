@@ -20,6 +20,7 @@
     <script src="js/latinize.js"></script>
     <script src="js/computerspeak.js"></script>
     <script src="js/socket.io-1.3.5.js"></script>
+    <script src="js/rtt.js"></script>
   </head>
   <body ng-app="myApp" ng-csp>
       
@@ -92,22 +93,15 @@
         
         <md-input-container ng-show="connected">
             <label>Enter message here</label>
-            <input ng-model="message" ng-show="connected"></input>
+            <input ng-model="message" ng-show="connected">
         </md-input-container>
         <md-button ng-click="send()" ng-show="connected" aria-label="send message">Send Message</md-button>
-
-        </div>
-        
         
         <md-button ng-show="connected" ng-click="toggle()"> start listening</md-button>
         <p>{{transcript}}</p>
         <p>{{output}}</p>
        
         </md-content>
-   
     </div>
-           
-  
-  <script src="js/rtt.js"></script>
   </body>
 </html>
