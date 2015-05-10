@@ -2,7 +2,7 @@ var myApp = angular.module('myApp',['ngMaterial']);
 var recognition;
 
 
-myApp.controller('RespokeController', function($scope, $http) {
+myApp.controller('RespokeController', function($scope, $http, $timeout) {
 
     $scope.connected = false;
     $scope.activeCall = null;
@@ -95,6 +95,7 @@ myApp.controller('RespokeController', function($scope, $http) {
             console.log('it broke :(');
         });
     }
+    var last_transcript = "";
     var recognizing = false;
     function setup(){
         var final_transcript = '';
@@ -104,7 +105,6 @@ myApp.controller('RespokeController', function($scope, $http) {
         if (!('webkitSpeechRecognition' in window)) {
           upgrade();
         } else {
-          start_button.style.display = 'inline-block';
           recognition = new webkitSpeechRecognition();
           recognition.continuous = true;
           recognition.interimResults = true;
@@ -138,24 +138,12 @@ myApp.controller('RespokeController', function($scope, $http) {
 
           recognition.onend = function() {
             // recognizing = false;
-            if (ignore_onend) {
-              return;
-            }
-            start_img.src = 'images/mic.gif';
-            if (!final_transcript) {
-              showInfo('info_start');
-              return;
-            }
-            if (window.getSelection) {
-              window.getSelection().removeAllRanges();
-              var range = document.createRange();
-              range.selectNode(document.getElementById('final_span'));
-              window.getSelection().addRange(range);
-            }
+            console.log("I'm ending");
+            recognition.start();
           };
-
+          var timout;
           recognition.onresult = function(event) {
-
+            $timeout.cancel(timout);
             var interim_transcript = '';
             if (typeof(event.results) == 'undefined') {
               recognition.onend = null;
@@ -166,31 +154,40 @@ myApp.controller('RespokeController', function($scope, $http) {
             for (var i = event.resultIndex; i < event.results.length; ++i) {
               if (event.results[i].isFinal) {
                 final_transcript += event.results[i][0].transcript;
-                $scope.translate(capitalize(final_transcript));
                 interim_transcript = '';
-                console.log(event.results[i][0].transcript);
+                // console.log(event.results[i][0].transcript);
               } else {
-                interim_transcript += event.results[i][0].transcript;
-                console.log(event.results[i][0].transcript);
+                interim_transcript = event.results[i][0].transcript;
+                // console.log(event.results[i][0].transcript);
               }
             }
-            console.log(final_transcript);
+            // console.log(final_transcript);
             final_transcript = capitalize(final_transcript);
             $scope.transcript = interim_transcript;
-            final_span.innerHTML = linebreak(final_transcript);
-            interim_span.innerHTML = linebreak(interim_transcript);
-            if (final_transcript || interim_transcript) {
-              showButtons('inline-block');
-            }
+            // final_span.innerHTML = linebreak(final_transcript);
+            // interim_span.innerHTML = linebreak(interim_transcript);
+
+            timout = $timeout(function(){
+                if (last_transcript){
+                    var ndx = $scope.transcript.indexOf(last_transcript.slice(last_transcript.length < 20 ? 0 : last_transcript.length-20,  last_transcript.length));
+                    console.log('found index', ndx, last_transcript);
+                    if (ndx != -1){
+                        $scope.transcript = $scope.transcript.slice(ndx+1, $scope.transcript.length-1);
+                    }
+                }
+                $scope.translate($scope.transcript);
+                // last_transcript = $scope.transcript;
+                interim_transcript = '';
+                $scope.transcript = '';
+                final_transcript = '';
+                recognition.stop();
+            }, 800);
+            // if (final_transcript || interim_transcript) {
+            //   showButtons('inline-block');
+            // }
           };
         }
         
-
-
-        function upgrade() {
-          start_button.style.visibility = 'hidden';
-          showInfo('info_upgrade');
-        }
 
         var two_line = /\n\n/g;
         var one_line = /\n/g;
@@ -202,29 +199,15 @@ myApp.controller('RespokeController', function($scope, $http) {
         function capitalize(s) {
           return s.replace(first_char, function(m) { return m.toUpperCase(); });
         }
-
-        
-
-        var current_style;
-        function showButtons(style) {
-          if (style == current_style) {
-            return;
-          }
-          current_style = style;
-        }
     }
     setup();
-    $scope.toggle = function(event) {
-          if (recognizing) {
-            recognition.stop();
-            $scope.translate($scope.transcript);
-            interim_transcript = '';
-            recognizing = false;
+    $scope.toggle = function() {
+          if (!recognizing) {
+            recognition.start();
             return;
           }
-          // final_transcript = '';
-          recognition.lang = select_dialect.value;
-          recognition.start();
+          recognition.stop();
+          recognizing = true;
           ignore_onend = false;
           // final_span.innerHTML = '';
           // interim_span.innerHTML = '';
