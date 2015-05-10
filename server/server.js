@@ -37,8 +37,9 @@ io.on('connection', function(socket){
 	{
 		console.log('start');
 		console.log('name', data.name);
-		unpairedList.push(new Client(socket, data.name, data.language, data.voice));
-		player1.socket.emit('Hello', "");
+		var client = new Client(socket, data.name, data.language, data.voice);
+		unpairedList.push(client);
+		client.socket.emit('StartConnection', "");
 		// else{
 		// 	var client = new Client(false, socket);
 		// 	var pair = new Pair(client, unpairedList[0]);

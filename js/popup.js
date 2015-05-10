@@ -69,9 +69,9 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
         voice: $scope.voice
         }, function (result) {
           if (!result) {
-            alert('Connection Not Established');
+            console.log('Connection Not Established');
           } else {
-            alert('connection established!');
+            console.log('connection established!');
           }
         });
     };
@@ -250,7 +250,7 @@ myApp.filter('langFilt', function(){
 
 
 myApp.factory('socket', function ($rootScope) {
-  var socket = io.connect();
+  var socket = io.connect('http://23.239.13.253:1357');
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {  
