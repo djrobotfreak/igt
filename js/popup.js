@@ -17,6 +17,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
         
         onConnect: function(evt) {
             setVideo('remoteVideoSource', evt.element)
+            evt.element.volume = 0.1;
         }
         
     };
@@ -220,8 +221,10 @@ myApp.filter('langFilt', function(){
             // console.log('objects', objects);
             for(var i = 0; i < objects.length; i++){
                 var item = objects[i];
-                if (item.lang.indexOf(language) != -1){
-                    return_list.push(item);
+                if(item.lang) {
+                    if (item.lang.indexOf(language) != -1){
+                        return_list.push(item);
+                    }
                 }
             }
         }
