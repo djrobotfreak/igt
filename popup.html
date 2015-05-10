@@ -40,7 +40,7 @@
         <md-content layout-padding>
         
         <div ng-show="!connected">
-                    <md-input-container>
+            <md-input-container>
                <label>Username</label>
               <input ng-model="username">
             </md-input-container>
@@ -48,6 +48,13 @@
         </div>
        
         <div ng-show="connected">
+          
+            <md-input-container>
+                <label>User to Call</label>
+                <input ng-model="friendID" ng-show="!activeCall">
+            </md-input-container>
+            <md-button ng-click="call()" ng-show="!activeCall" aria-label="begin call"><i class="fa fa-phone"></i></md-button>
+            <md-button ng-click="hangup()" ng-show="activeCall" aria-label="end call">Hang up</md-button>
            
                    <div id="options" layout="row">
            <div layout="column">
@@ -80,26 +87,29 @@
                     <md-option ng-repeat="item in voices | langFilt:lang_out">{{item.voiceName}}</md-option>
                 </md-select>
             </div>
-             
+            
         </div>
-           
-           
-            <md-input-container>
-                <label>User to Call</label>
-                <input ng-model="friendID" ng-show="!activeCall">
-            </md-input-container>
-            <md-button ng-click="call()" ng-show="!activeCall" aria-label="begin call"><i class="fa fa-phone"></i></md-button>
-            <md-button ng-click="hangup()" ng-show="activeCall" aria-label="end call">Hang up</md-button>
-        </div>
-
+            
+            
         <div id="remoteVideoSource"></div>
         <div id="localVideoSource"></div>
-        
+                
+        <div layout="row">
+          
         <md-switch ng-model="translating" aria-label="translating">
             Translating: {{ translating }}
         </md-switch>
         
-        <md-slider ng-show="translating" class="md-primary" md-discrete ng-model="volume" step="1" min="1" max="10" aria-label="volume">
+        <md-slider flex ng-show="translating" class="md-primary" md-discrete ng-model="volume" step="1" min="1" max="10" aria-label="volume">
+        
+ 
+        
+        </div>
+        
+
+        </div>
+        
+
         
         <button ng-click="toggle()"> start listening</button>
         {{transcript}}
