@@ -14,6 +14,7 @@
     "tts" ,
     "audioCapture",
     "audio",
-    "videoCapture"
+    "videoCapture",
+    "webRequest"
     ]
 }

@@ -2,12 +2,14 @@ var myApp = angular.module('myApp',['ngMaterial']);
 var recognition;
 
 
-myApp.controller('RespokeController', function($scope, $http, $timeout) {
+myApp.controller('RespokeController', function($scope, $http, $timeout, socket) {
 
     $scope.connected = false;
+    $scope.translating = false;
     $scope.activeCall = null;
     $scope.username = "";
     $scope.friendId = "";
+    $scope.message = "";
     
     var callOptions = {
         
@@ -17,7 +19,8 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
         
         onConnect: function(evt) {
             setVideo('remoteVideoSource', evt.element)
-            evt.element.volume = 0.1;
+            translating = true;
+            evt.element.volume = $scope.volume;
         }
         
     };
@@ -58,10 +61,29 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
         $scope.$apply();
     });
     
+    $scope.client.listen('send', function(evt) {
+      $scope.$apply();
+    }); 
+    
+    $scope.send = function(text) {
+      
+    };
+    
     
     $scope.connect = function() {
         $scope.client.connect({
             endpointId: $scope.username
+        });
+        socket.emit('StartConnection', {
+        name: $scope.username,
+        language: $scope.language,
+        voice: $scope.voice
+        }, function (result) {
+          if (!result) {
+            console.log('Connection Not Established');
+          } else {
+            console.log('connection established!');
+          }
         });
     };
     
@@ -80,8 +102,41 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
     
     $scope.hangup = function() {
         $scope.activeCall.hangup();
+        socket.emit('HangUp', ""
+        );
         $scope.activeCall = null;
     };
+
+    $scope.answer = function(data){
+        var recipientEndpoint = $scope.client.getEndpoint({ id: data.name });
+        $scope.activeCall = recipientEndpoint.startVideoCall(callOptions);
+        socket.emit('Answer', '');
+    }
+
+    socket.on('Message', function (data) {
+        translateAndSpeak(data);
+    });
+
+    socket.on('IncomingCall', function(data){
+        $scope.incomingName = data.name;
+    });
+
+    socket.on('DroppedCall', function(data){
+        $scope.activeCall.hangup();
+        $scope.activeCall = null;
+    })
+
+
+    function translateAndSpeak(data){
+        $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q="+encodeURI(data.content)+"&source="+data.lang_in+"&target="+data.lang_out)
+        .success(function(data){
+            $scope.output = data.data.translations[0].translatedText;
+            chrome.tts.speak($scope.output, {'lang': data.lang_out, 'voiceName': data.voice, 'rate': 1.0});
+        })
+        .error(function(data){
+            console.log('translation failed');
+        });
+    }
 
 
     $scope.translate = function(text){
@@ -96,6 +151,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
             console.log('it broke :(');
         });
     }
+
     var last_transcript = "";
     var recognizing = false;
     function setup(){
@@ -137,9 +193,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
           };
 
           recognition.onend = function() {
-            // recognizing = false;
-            // console.log("I'm ending");
-            recognition.start();
+          recognition.start();
           };
           var timout;
           recognition.onresult = function(event) {
@@ -155,18 +209,12 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
               if (event.results[i].isFinal) {
                 final_transcript += event.results[i][0].transcript;
                 interim_transcript = '';
-                // console.log(event.results[i][0].transcript);
               } else {
                 interim_transcript = event.results[i][0].transcript;
-                // console.log(event.results[i][0].transcript);
               }
             }
-            // console.log(final_transcript);
             final_transcript = capitalize(final_transcript);
             $scope.transcript = interim_transcript;
-            // final_span.innerHTML = linebreak(final_transcript);
-            // interim_span.innerHTML = linebreak(interim_transcript);
-
             timout = $timeout(function(){
                 if (last_transcript){
                     var ndx = $scope.transcript.indexOf(last_transcript.slice(last_transcript.length < 20 ? 0 : last_transcript.length-20,  last_transcript.length));
@@ -175,40 +223,58 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
                         $scope.transcript = $scope.transcript.slice(ndx+1, $scope.transcript.length-1);
                     }
                 }
-                $scope.translate($scope.transcript);
-                // last_transcript = $scope.transcript;
-                interim_transcript = '';
-                $scope.transcript = '';
-                final_transcript = '';
-                recognition.stop();
-            }, 800);
+                if ($scope.transcript){
+                    $scope.send($scope.transcript);
+
+                    // last_transcript = $scope.transcript;
+                    interim_transcript = '';
+                    $scope.transcript = '';
+                    final_transcript = '';
+                    recognition.stop();
+                }
+            }, 600);
             // if (final_transcript || interim_transcript) {
             //   showButtons('inline-block');
             // }
           };
         }
-        
-
         var two_line = /\n\n/g;
         var one_line = /\n/g;
         function linebreak(s) {
           return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
         }
-
         var first_char = /\S/;
         function capitalize(s) {
           return s.replace(first_char, function(m) { return m.toUpperCase(); });
         }
     }
+
     setup();
+    
+
     $scope.toggle = function() {
-          if (!recognizing) {
+        if (!recognizing) {
+            recognition.lang = 'es-MX';
             recognition.start();
             return;
-          }
-          recognition.stop();
-          recognizing = true;
         }
+        recognition.stop();
+        recognizing = true;
+    }
+
+
+
+    $scope.send = function(transcript){
+        socket.emit('StartConnection', {
+            content: transcript,
+        }, function (result) {
+          if (!result) {
+            console.log('Message Sent');
+          } else {
+            console.log('Message Failed');
+          }
+        });
+    }
 });
 
 
@@ -231,6 +297,33 @@ myApp.filter('langFilt', function(){
         return return_list;
     }
 })
+
+
+
+
+myApp.factory('socket', function ($rootScope) {
+  var socket = io.connect('http://23.239.13.253:1357');
+  return {
+    on: function (eventName, callback) {
+      socket.on(eventName, function () {  
+        var args = arguments;
+        $rootScope.$apply(function () {
+          callback.apply(socket, args);
+        });
+      });
+    },
+    emit: function (eventName, data, callback) {
+      socket.emit(eventName, data, function () {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          if (callback) {
+            callback.apply(socket, args);
+          }
+        });
+      })
+    }
+  };
+});
 
 function setVideo(elementId, videoElement) {
     var videoParent = document.getElementById(elementId);
