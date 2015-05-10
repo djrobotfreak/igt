@@ -11,7 +11,7 @@ var First = true;
 var player1;
 var player2;
 var callList = [];
-var unpairedList = [];
+var clientList = [];
 // The socket.io WebSocket server, running with the node.js server.
 
 function Client( Socket, Name, Language, Voice )
@@ -38,12 +38,12 @@ io.on('connection', function(socket){
 		console.log('start');
 		console.log('name', data.name);
 		var client = new Client(socket, data.name, data.language, data.voice);
-		unpairedList.push(client);
+		clientList.push(client);
 		client.socket.emit('StartConnection', "");
 		// else{
 		// 	var client = new Client(false, socket);
-		// 	var pair = new Pair(client, unpairedList[0]);
-		// 	unpairedList.shift();
+		// 	var pair = new Pair(client, clientList[0]);
+		// 	clientList.shift();
 		// 	pairedList.push(pair);
 		// 	pair.client1.emit('ConnectionStart', JSON.stringify({'id': 1}));
 		// 	pair.client2.emit('ConnectionStart', JSON.stringify({'id': 2}));
@@ -51,20 +51,23 @@ io.on('connection', function(socket){
 	});
 	socket.on('Call', function(data){
 		var caller, receiver;
-		for (var i = 0; i < unpairedList.length; i++){
-			if (unpairedList[i].socket == socket){
-				caller = unpairedList[i];
+		for (var i = 0; i < clientList.length; i++){
+			if (clientList[i].socket == socket){
+				caller = clientList[i];
 				break;
 			}
 		}
 		var name = data.name;
-		for (var i = 0; i < unpairedList.length; i++){
-			if (unpairedList[i].name == data.name){
-				receiver = unpairedList[i];
+		for (var i = 0; i < clientList.length; i++){
+			if (clientList[i].name == data.name){
+				receiver = clientList[i];
 				break;
 			}
 		}
-		callList.push(new Call(caller, receiver));
+		var call = new Call(caller, receiver);
+		callList.push(call);
+		receiver.call = call;
+		caller.call = call;
 		receiver.socket.emit("IncomingCall", JSON.stringify({"name": caller.name}));
 	});
 	socket.on('Answer', function(data){
@@ -81,26 +84,49 @@ io.on('connection', function(socket){
 		for(var i = 0; i < callList[i].length; i++){
 			if (callList[i].receiver.socket == socket){
 				callList[i].caller.socket.emit("DroppedCall");
+				callList[i].caller.call = undefined;
+				callList[i].receiver.call = undefined;
 				call.delete();
 				break;
 			}
 			else if(callList[i].caller.socket == socket){
 				callList[i].receiver.socket.emit("DroppedCall");
+				callList[i].caller.call = undefined;
+				callList[i].receiver.call = undefined;
 				call.delete();
 				break;
 			}
 		}
-	})
+	});
 	socket.on('Message', function(data){
 		for (var i = 0; i < callList.length; i++){
 			if (socket == callList[i].receiver.socket){
-				callList[i].caller.socket.emit('Messasge', data);
+				callList[i].caller.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].caller.language, "lang_to":callList[i].receiver.language, "voice", callList[i].caller.voice}));
 				break;
 			}
 			else if (socket == callList[i].caller.socket){
-				callList[i].receiver.socket.emit('Messasge', data);
+				callList[i].receiver.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].receiver.language, "lang_to":callList[i].caller.language, "voice", callList[i].receiver.voice}));
 				break;
 			}
 		}
-	})
+	});
+	socket.on('TerminateConnection', function(data){
+		for (var i = 0; i < clientList.length; i++){
+			if (clientList[i].socket == socket){
+				if (clientList[i].call != undefined){
+					if (socket == clientList[i].caller.socket){
+						clientList[i].receiver.socket.emit('DroppedCall');
+					}
+					else if (socket == clientList[i].receiver.socket){
+						clientList[i].caller.socket.emit('DroppedCall');
+					}
+					clientList[i].call.caller.call = undefined;
+					clientList[i].call.receiver.call = undefined;
+					call.delete();
+				}
+				clientList[i].delete();
+				return;
+			}
+		}
+	});
 });
