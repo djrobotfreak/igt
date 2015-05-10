@@ -100,6 +100,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     };
     
     $scope.disconnect = function() {
+        $scope.stopRecognition();
         if ($scope.activeCall){
             $scope.hangup();
         }
@@ -119,6 +120,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     };
     
     $scope.hangup = function() {
+        $scope.stopRecognition();
         $scope.activeCall.hangup();
         socket.emit('HangUp', ""
         );
@@ -196,6 +198,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         .success(function(data){
             // console.log('it worked!');
             $scope.output = data.data.translations[0].translatedText;
+            console.log('output', $scope.output);
             chrome.tts.speak($scope.output, {'lang': $scope.lang_out, 'gender': "male", 'rate': 1.0});
         })
         .error(function(data){
@@ -285,7 +288,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
                     final_transcript = '';
                     recognition.stop();
                 }
-            }, 600);
+            }, 1000);
             // if (final_transcript || interim_transcript) {
             //   showButtons('inline-block');
             // }
@@ -303,7 +306,11 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     }
 
     setup();
-    
+    $scope.stopRecognition(){
+        if (regognizing){
+            recognition.stop();
+        }
+    }
 
     $scope.toggle = function() {
         if (!recognizing) {
