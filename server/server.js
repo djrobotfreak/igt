@@ -3,8 +3,8 @@ console.log('Im starting');
 var uuid = require('node-uuid');
 var io = require('socket.io');
 // var express = require('express');
-var app = express()
-  , server = require('http').createServer(app)
+// var app = express()
+var server = require('http').createServer(app)
   , io = io.listen(server);
 // The node.js HTTP server.
 var First = true;
