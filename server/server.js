@@ -14,13 +14,13 @@ var callList = [];
 var clientList = [];
 // The socket.io WebSocket server, running with the node.js server.
 
-function Client( Socket, Name, Language, Voice )
+function Client( Socket, Name, Language, Gender )
 {
     this.name = Name;
 	this.socket = Socket;
 	this.call = undefined;
 	this.language = Language;
-	this.voice = Voice;
+	this.gender = Gender;
 }
 
 function Call (Caller, Receiver)
@@ -38,8 +38,8 @@ io.on('connection', function(socket){
 		console.log('New Connection');
 		console.log('name', data.name);
 		console.log('language', data.language);
-		console.log('voice', data.voice);
-		var client = new Client(socket, data.name, data.language, data.voice);
+		console.log('gender', data.gender);
+		var client = new Client(socket, data.name, data.language, data.gender);
 		clientList.push(client);
 		client.socket.emit('StartConnection', "");
 		// else{
@@ -107,11 +107,11 @@ io.on('connection', function(socket){
 		console.log('got a message', data.content)
 		for (var i = 0; i < callList.length; i++){
 			if (socket == callList[i].receiver.socket){
-				callList[i].caller.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].caller.language, "lang_to":callList[i].receiver.language, "voice": callList[i].caller.voice}));
+				callList[i].caller.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].caller.language, "lang_to":callList[i].receiver.language, "gender": callList[i].caller.gender}));
 				break;
 			}
 			else if (socket == callList[i].caller.socket){
-				callList[i].receiver.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].receiver.language, "lang_to":callList[i].caller.language, "voice": callList[i].receiver.voice}));
+				callList[i].receiver.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].receiver.language, "lang_to":callList[i].caller.language, "gender": callList[i].receiver.gender}));
 				break;
 			}
 		}

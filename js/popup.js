@@ -126,12 +126,11 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
         $scope.activeCall = null;
     })
 
-
     function translateAndSpeak(data){
         $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q="+encodeURI(data.content)+"&source="+data.lang_in+"&target="+data.lang_out)
         .success(function(data){
             $scope.output = data.data.translations[0].translatedText;
-            chrome.tts.speak($scope.output, {'lang': data.lang_out, 'voiceName': data.voice, 'rate': 1.0});
+            chrome.tts.speak($scope.output, {'lang': data.lang_out, 'gender': data.gender.toLowerCase(), 'rate': 1.0});
         })
         .error(function(data){
             console.log('translation failed');
@@ -145,7 +144,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
         .success(function(data){
             // console.log('it worked!');
             $scope.output = data.data.translations[0].translatedText;
-            chrome.tts.speak($scope.output, {'lang': $scope.lang_out, 'voiceName': $scope.voice, 'rate': 1.0});
+            chrome.tts.speak($scope.output, {'lang': $scope.lang_out, 'gender': $scope.gender.toLowerCase(), 'rate': 1.0});
         })
         .error(function(data){
             console.log('it broke :(');
