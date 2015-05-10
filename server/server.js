@@ -97,7 +97,7 @@ io.on('connection', function(socket){
 	});
 	socket.on('HangUp', function(data){
 		console.log('Somebody hung up');
-		for(var i = 0; i < callList[i].length; i++){
+		for(var i = 0; i < callList.length; i++){
 			if (callList[i].receiver.socket == socket){
 				callList[i].caller.socket.emit("DroppedCall");
 				callList[i].caller.call = undefined;
