@@ -41,23 +41,23 @@
 
 
         <div id="options" layout="row">
-            <div layout="column">
-               <md-toolbar>
+           <div layout="column">
+                <md-toolbar>
                    <div class="md-toolbar-tools">
                         <h2 class="md-flex">From</h2>
                    </div>
                 </md-toolbar>
-                <md-select placeholder="select" ng-model="lang_out">
+                <md-select placeholder="select" ng-model="lang_in">
                     <md-option ng-repeat="item in languages">{{item.name}}</md-option>
                 </md-select>
             </div>
             <div layout="column">
-                <md-toolbar>
+               <md-toolbar>
                    <div class="md-toolbar-tools">
                         <h2 class="md-flex">To</h2>
                    </div>
                 </md-toolbar>
-                <md-select placeholder="select" ng-model="lang_in">
+                <md-select placeholder="select" ng-model="lang_out">
                     <md-option ng-repeat="item in languages">{{item.name}}</md-option>
                 </md-select>
             </div>
