@@ -22,3 +22,6 @@
 .md-thumb-container {
   z-index: 100;
 }
+[layout=row] > button {
+  height: 40px;
+}

@@ -83,8 +83,8 @@
                    <label>User to Call</label>
                    <input ng-model="friendID" ng-show="!activeCall">
                </md-input-container>
-               <md-button ng-click="call()" ng-show="!activeCall" aria-label="begin call"><i class="fa fa-phone"></i></md-button>
-               <md-button ng-click="hangup()" ng-show="activeCall" aria-label="end call">Hang up</md-button>
+               <md-button ng-click="call()" ng-show="!activeCall" class="md-primary md-raised" aria-label="begin call"><i class="fa fa-phone"></i></md-button>
+               <md-button ng-click="hangup()" ng-show="activeCall" class="md-warn md-raised" aria-label="end call">Hang up</md-button>
            </div>
             <div id="remoteVideoSource"></div>
             <div id="localVideoSource"></div>
