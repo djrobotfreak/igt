@@ -41,7 +41,7 @@
         <md-content layout-padding>
         
         <div ng-show="!connected">
-                    <md-input-container>
+            <md-input-container>
                <label>Username</label>
               <input ng-model="username">
             </md-input-container>
@@ -49,8 +49,17 @@
         </div>
        
         <div ng-show="connected">
+          
+        <div layout="row">
+            <md-input-container flex>
+                <label>User to Call</label>
+                <input ng-model="friendID" ng-show="!activeCall">
+            </md-input-container>
+            <md-button ng-click="call()" ng-show="!activeCall" aria-label="begin call"><i class="fa fa-phone"></i></md-button>
+            <md-button ng-click="hangup()" ng-show="activeCall" aria-label="end call">Hang up</md-button>
+        </div>
            
-                   <div id="options" layout="row">
+        <div id="options" layout="row">
            <div layout="column">
                 <md-toolbar>
                    <div class="md-toolbar-tools">
@@ -81,85 +90,49 @@
                     <md-option ng-repeat="item in voices | langFilt:lang_out">{{item.voiceName}}</md-option>
                 </md-select>
             </div>
-             
-        </div>
-           
-           
-            <md-input-container>
-                <label>User to Call</label>
-                <input ng-model="friendID" ng-show="!activeCall">
-            </md-input-container>
-            <md-button ng-click="call()" ng-show="!activeCall" aria-label="begin call"><i class="fa fa-phone"></i></md-button>
-            <md-button ng-click="hangup()" ng-show="activeCall" aria-label="end call">Hang up</md-button>
-          <md-input-container>
-            <label>Enter message here</label>
-            <input ng-model="message" ng-show="connected"></input>
-          </md-input-container>
-          <md-button ng-click="send()" ng-show="connected" aria-label="send message">Send Message</md-button>
-        </div>
-
-        <div id="remoteVideoSource"></div>
-        <div id="localVideoSource"></div>
         
+                    
+            
+        </div>
+          
+          
+                  <div id="remoteVideoSource"></div>
+        <div id="localVideoSource"></div>
+                
+        <div layout="row">
         
         <md-switch ng-model="translating" aria-label="translating">
             Translating: {{ translating }}
         </md-switch>
         
-        <md-slider ng-show="translating" class="md-primary" md-discrete ng-model="volume" step="0.1" min="0" max="1" aria-label="volume">
-        </md-slider>
-        </md-content>
+        <md-slider flex ng-show="translating" class="md-primary" md-discrete ng-model="volume" step="1" min="1" max="10" aria-label="volume">
+        
+        </div>
+           
+           
+
+        </div>
+            
+
+        
+        
+                  <md-input-container>
+            <label>Enter message here</label>
+            <input ng-model="message" ng-show="connected"></input>
+          </md-input-container>
+          <md-button ng-click="send()" ng-show="connected" aria-label="send message">Send Message</md-button>
+
+        </div>
+        
+        
         <md-button ng-click="toggle()"> start listening</button>
         <p>{{transcript}}</p>
         <p>{{output}}</p>
+       
+        </md-content>
+   
     </div>
-            <!-- <div class="compact marquee">
-            <div id="info">
-              <p id="info_start">
-                Click on the microphone icon and begin speaking for as long as you like.
-              </p>
-              <p id="info_speak_now" style="display:none">
-                Speak now.
-              </p>
-              <p id="info_no_speech" style="display:none">
-                No speech was detected. You may need to adjust your <a href=
-                "//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">microphone
-                settings</a>.
-              </p>
-              <p id="info_no_microphone" style="display:none">
-                No microphone was found. Ensure that a microphone is installed and that
-                <a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">
-                microphone settings</a> are configured correctly.
-              </p>
-              <p id="info_allow" style="display:none">
-                Click the "Allow" button above to enable your microphone.
-              </p>
-              <p id="info_denied" style="display:none">
-                Permission to use microphone was denied.
-              </p>
-              <p id="info_blocked" style="display:none">
-                Permission to use microphone is blocked. To change, go to
-                chrome://settings/contentExceptions#media-stream
-              </p>
-              <p id="info_upgrade" style="display:none">
-                Web Speech API is not supported by this browser. Upgrade to <a href=
-                "//www.google.com/chrome">Chrome</a> version 25 or later.
-              </p>
-            </div>
-            <div id="div_start">
-              <button id="start_button" onclick="startButton(event)"><img alt="Start" id="start_img"
-              src="images/mic.gif"></button>
-            </div>
-            <div id="results">
-              <span class="final" id="final_span"></span> <span class="interim" id=
-              "interim_span"></span>
-            </div>
-            <div class="compact marquee" id="div_language">
-              <select id="select_language" onchange="updateCountry()">
-                </select>&nbsp;&nbsp; <select id="select_dialect">
-                </select>
-            </div>
-        </div> -->
+           
   
   <script src="js/rtt.js"></script>
   </body>
