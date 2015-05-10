@@ -278,11 +278,11 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
                 }
                 if ($scope.transcript){
                     $scope.send($scope.transcript);
+                    $scope.last_transcript = $scope.transcript;
                     console.log($scope.transcript);
-
+                    $scope.transcript = "";
                     // last_transcript = $scope.transcript;
                     interim_transcript = '';
-                    $scope.transcript = '';
                     final_transcript = '';
                     recognition.stop();
                 }
