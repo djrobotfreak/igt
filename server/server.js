@@ -72,11 +72,16 @@ io.on('connection', function(socket){
 				break;
 			}
 		}
-		var call = new Call(caller, receiver);
-		callList.push(call);
-		receiver.call = call;
-		caller.call = call;
-		receiver.socket.emit("IncomingCall", JSON.stringify({"name": caller.name}));
+		if (receiver && caller){
+			var call = new Call(caller, receiver);
+			callList.push(call);
+			receiver.call = call;
+			caller.call = call;
+			receiver.socket.emit("IncomingCall", JSON.stringify({"name": caller.name}));
+		}
+		else{
+			socket.emit('CallDropped', '');
+		}
 	});
 	socket.on('Answer', function(data){
 		console.log('sombody answered the call');

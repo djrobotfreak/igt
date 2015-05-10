@@ -127,7 +127,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
           .content('You have an incoming call!')
           .action('Answer')
           .highlightAction(true)
-          .position($scope.getToastPosition())
+          .position($scope.toastPosition)
         .hideDelay(8000);
     $mdToast.show(toast).then(function() {
         $scope.answer(name);
