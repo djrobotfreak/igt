@@ -21,8 +21,8 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
         
     };
     $scope.languages = [
-    {"name": "english", "short": "en"},
-    {"name": "espanol", "short": "es"}
+    {"name": "en"},
+    {"name": "es"}
     ];
     chrome.tts.getVoices(
           function(voices) {

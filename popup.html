@@ -45,11 +45,12 @@
                 <md-option ng-repeat="item in languages">{{item.name}}</md-option>
             </md-select>
             <md-select ng-model="lang_in">
+
                 <md-option ng-repeat="item in languages">{{item.name}}</md-option>
             </md-select>
             <md-select ng-model="voice"> 
 <!--            item.voiceName as item.voiceName for item in voices-->
-                <md-option ng-repeat="item in voices | langFilt:lang_out.short">{{item.voiceName}}</md-option>
+                <md-option ng-repeat="item in voices | langFilt:lang_out">{{item.voiceName}}</md-option>
             </md-select>
             <md-input-container>
               <label>Username</label>
