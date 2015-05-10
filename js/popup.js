@@ -174,13 +174,16 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
                         $scope.transcript = $scope.transcript.slice(ndx+1, $scope.transcript.length-1);
                     }
                 }
-                $scope.translate($scope.transcript);
-                // last_transcript = $scope.transcript;
-                interim_transcript = '';
-                $scope.transcript = '';
-                final_transcript = '';
-                recognition.stop();
-            }, 800);
+                if ($scope.transcript){
+                    $scope.translate($scope.transcript);
+
+                    // last_transcript = $scope.transcript;
+                    interim_transcript = '';
+                    $scope.transcript = '';
+                    final_transcript = '';
+                    recognition.stop();
+                }
+            }, 600);
             // if (final_transcript || interim_transcript) {
             //   showButtons('inline-block');
             // }
@@ -202,6 +205,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
     setup();
     $scope.toggle = function() {
           if (!recognizing) {
+            recognition.lang = 'es-MX';
             recognition.start();
             return;
           }
