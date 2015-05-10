@@ -86,6 +86,9 @@
                <md-button ng-click="call()" ng-show="!activeCall" class="md-primary md-raised" aria-label="begin call"><i class="fa fa-phone"></i></md-button>
                <md-button ng-click="hangup()" ng-show="activeCall" class="md-warn md-raised" aria-label="end call">Hang up</md-button>
            </div>
+           
+           
+           <div ng-show="activeCall">
             <div id="remoteVideoSource"></div>
             <div id="localVideoSource"></div>
                     
@@ -108,12 +111,26 @@
                     <md-slider flex class="md-primary" md-discrete ng-model="volume" step=".1" min="0" max="1" aria-label="volume"></md-slider>
                 </div>
             </div>
+        
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 class="md-flex">Translation: {{transcript}}</h2>
+            </div>
+        </md-toolbar>
+        
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 class="md-flex">Sending: {{output}}</h2>
+            </div>
+        </md-toolbar>
+        
+        </div>
+        
         </div>
             
 
 
-        <p>{{transcript}}</p>
-        <p>{{output}}</p>
+
         </div>
        
         </md-content>
