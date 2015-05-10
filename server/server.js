@@ -87,6 +87,7 @@ io.on('connection', function(socket){
 		console.log('sombody answered the call');
 		for (var i = 0; i < callList.length; i++){
 			if(callList[i].receiver.socket == socket){
+				console.log('callList', callList[i]);
 				callList[i].status = 'connected';
 				socket.emit('Connected','');
 				callList[i].caller.socket.emit('Connected', '');
