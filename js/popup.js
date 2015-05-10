@@ -178,6 +178,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     })
 
     function translateAndSpeak(data){
+        console.log(data);
         $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q="+encodeURI(data.content)+"&source="+data.lang_in+"&target="+data.lang_out)
         .success(function(data){
             $scope.output = data.data.translations[0].translatedText;
