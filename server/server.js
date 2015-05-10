@@ -2,8 +2,8 @@ console.log('Im starting');
 // Load the SDK and UUID
 var uuid = require('node-uuid');
 var io = require('socket.io');
-// var express = require('express');
-// var app = express()
+ var express = require('express');
+ var app = express()
 var server = require('http').createServer(app)
   , io = io.listen(server);
 // The node.js HTTP server.
