@@ -83,7 +83,6 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
         $scope.activeCall = null;
     };
 
-
     $scope.translate = function(text){
         console.log('translating text: ', text);
         $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q="+encodeURI(text)+"&source="+$scope.lang_in+"&target="+$scope.lang_out)
@@ -181,7 +180,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
                 $scope.transcript = '';
                 final_transcript = '';
                 recognition.stop();
-            }, 800);
+            }, 1000);
             // if (final_transcript || interim_transcript) {
             //   showButtons('inline-block');
             // }

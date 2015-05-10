@@ -100,12 +100,11 @@
         </md-switch>
         
         <md-slider ng-show="translating" class="md-primary" md-discrete ng-model="volume" step="1" min="1" max="10" aria-label="volume">
-        
-        <button ng-click="toggle()"> start listening</button>
-        {{transcript}}
-        <button ng-click="testTranslate()">Test Translate</button>
-        <p>{{output}}</p>
+        </md-slider>
         </md-content>
+        <md-button ng-click="toggle()"> start listening</button>
+        <p>{{transcript}}</p>
+        <p>{{output}}</p>
     </div>
             <!-- <div class="compact marquee">
             <div id="info">
