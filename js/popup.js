@@ -11,16 +11,20 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     $scope.friendId = "";
     $scope.message = "";
     
+    var localVideo = null;
+    var connectVideo = null;
+    
     var callOptions = {
         
         onLocalMedia: function(evt) {
             setVideo('localVideoSource', evt.element)
+            localVideo = evt.element;
         },
         
         onConnect: function(evt) {
             setVideo('remoteVideoSource', evt.element)
+            connectVideo = evt.element;
             $scope.translating = true;
-            evt.element.volume = $scope.volume;
         }
         
     };
@@ -54,11 +58,17 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         {
             $scope.activeCall.answer(callOptions);
             $scope.activeCall.listen('hangup', function() {
+                connectVideo.volume = $scope.volume;
                 $scope.activeCall = null;
                 $scope.$apply();
             });
         }
         $scope.$apply();
+    });
+    
+    $scope.client.listen('volume', function() {
+       
+       $scope.$apply(); 
     });
     
     $scope.client.listen('send', function(evt) {
@@ -69,6 +79,9 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
       
     };
     
+    $scope.volume = function() {
+        
+    }
     
     $scope.connect = function() {
         $scope.client.connect({
@@ -113,6 +126,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         var recipientEndpoint = $scope.client.getEndpoint({ id: data.name });
         $scope.activeCall = recipientEndpoint.startVideoCall(callOptions);
         socket.emit('Answer', '');
+        
     }
     
     $scope.toastPosition = {
@@ -121,12 +135,6 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     left: false,
     right: true
     };
-    
-    $scope.getToastPosition = function() {
-    return Object.keys($scope.toastPosition)
-      .filter(function(pos) { return $scope.toastPosition[pos]; })
-      .join(' ');
-  };
       
     $scope.incomingCall = function(name) {
     var toast = $mdToast.simple()
