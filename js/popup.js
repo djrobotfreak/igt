@@ -298,9 +298,6 @@ myApp.filter('langFilt', function(){
     }
 })
 
-
-
-
 myApp.factory('socket', function ($rootScope) {
   var socket = io.connect('http://23.239.13.253:1357');
   return {

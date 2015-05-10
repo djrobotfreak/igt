@@ -121,13 +121,10 @@
             <input ng-model="message" ng-show="connected"></input>
           </md-input-container>
           <md-button ng-click="send()" ng-show="connected" aria-label="send message">Send Message</md-button>
-
-        </div>
-        
-        
-        <md-button ng-show="connected" ng-click="toggle()"> start listening</button>
+        <md-button ng-show="translating" ng-click="toggle()"> start listening</md-button>
         <p>{{transcript}}</p>
         <p>{{output}}</p>
+        </div>
        
         </md-content>
    
