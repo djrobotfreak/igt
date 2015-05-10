@@ -224,16 +224,12 @@ myApp.filter('langFilt', function(){
         var return_list = [];
         // console.log('objects', objects);
         if (language){
-//            console.log(language);
             // console.log('language', language);
-//             console.log('objects', objects);
+            // console.log('objects', objects);
             for(var i = 0; i < objects.length; i++){
                 var item = objects[i];
-                if(item.lang) {
-//                    console.log(item);
-                    if (item.lang.indexOf(language) != -1){
+                if (item.lang.indexOf(language) != -1){
                     return_list.push(item);
-                    }
                 }
             }
         }
