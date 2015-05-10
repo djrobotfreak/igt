@@ -2,19 +2,19 @@
 #localVideoSource video {
   height: 100px;
   margin: -130px 0 0 20px;
-  position: relative;
+  position: absolute;
 }
-#options > div {
+.options > div {
   padding-right: 5px;
 }
-#options md-select-label {
+.options md-select-label {
   padding-top: 5px;
 }
-#options md-toolbar {
+.options md-toolbar {
   min-height: 40px;
   font-size: 20px;
 }
-#options md-toolbar .md-toolbar-tools {
+.options md-toolbar .md-toolbar-tools {
   min-height: 40px;
   height: 40px;
 }

@@ -2,7 +2,7 @@ var myApp = angular.module('myApp',['ngMaterial']);
 var recognition;
 
 
-myApp.controller('RespokeController', function($scope, $http, $timeout, socket) {
+myApp.controller('RespokeController', function($scope, $http, $timeout, socket, $mdToast) {
 
     $scope.connected = false;
     $scope.translating = false;
