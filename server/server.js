@@ -101,11 +101,11 @@ io.on('connection', function(socket){
 	socket.on('Message', function(data){
 		for (var i = 0; i < callList.length; i++){
 			if (socket == callList[i].receiver.socket){
-				callList[i].caller.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].caller.language, "lang_to":callList[i].receiver.language, "voice", callList[i].caller.voice}));
+				callList[i].caller.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].caller.language, "lang_to":callList[i].receiver.language, "voice": callList[i].caller.voice}));
 				break;
 			}
 			else if (socket == callList[i].caller.socket){
-				callList[i].receiver.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].receiver.language, "lang_to":callList[i].caller.language, "voice", callList[i].receiver.voice}));
+				callList[i].receiver.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].receiver.language, "lang_to":callList[i].caller.language, "voice": callList[i].receiver.voice}));
 				break;
 			}
 		}
