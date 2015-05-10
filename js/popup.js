@@ -77,7 +77,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
         socket.emit('StartConnection', {
         name: $scope.username,
         language: $scope.language,
-        voice: $scope.voice
+        voice: $scope.gender
         }, function (result) {
           if (!result) {
             console.log('Connection Not Established');
@@ -120,7 +120,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
     right: true
     };
       
-    $scope.incomingCall = function() {
+    $scope.incomingCall = function(name) {
     var toast = $mdToast.simple()
           .content('You have an incoming call!')
           .action('Answer')
@@ -128,7 +128,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
           .position($scope.getToastPosition())
         .hideDelay(8000);
     $mdToast.show(toast).then(function() {
-        answer();
+        $scope.answer(name);
     });
     };
 
@@ -138,6 +138,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
 
     socket.on('IncomingCall', function(data){
         $scope.incomingName = data.name;
+        $scope.incomingCall(name);
     });
 
     socket.on('DroppedCall', function(data){
@@ -283,7 +284,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
 
 
     $scope.send = function(transcript){
-        socket.emit('StartConnection', {
+        socket.emit('Message', {
             content: transcript,
         }, function (result) {
           if (!result) {
