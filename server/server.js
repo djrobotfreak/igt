@@ -50,14 +50,14 @@ io.on('connection', function(socket){
 	});
 	socket.on('Call', function(data){
 		var caller, receiver;
-		for (var i = 0 i < unpairedList.length; i++){
+		for (var i = 0; i < unpairedList.length; i++){
 			if (unpairedList[i].socket == socket){
 				caller = unpairedList[i];
 				break;
 			}
 		}
 		var name = data.name;
-		for (var i = 0 ; i < unpairedList.length; i++){
+		for (var i = 0; i < unpairedList.length; i++){
 			if (unpairedList[i].name == data.name){
 				receiver = unpairedList[i];
 				break;
