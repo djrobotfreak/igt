@@ -79,7 +79,7 @@
         </div>
         <div ng-show="connected">
             <div layout="row">
-               <md-input-container flex>
+               <md-input-container flex ng-show="!activeCall">
                    <label>User to Call</label>
                    <input ng-model="friendID" ng-show="!activeCall">
                </md-input-container>
@@ -89,13 +89,24 @@
             <div id="remoteVideoSource"></div>
             <div id="localVideoSource"></div>
                     
-            <div layout="row" layout-margin>
-            
-                <md-switch ng-model="translating" aria-label="translating">
-                    Translating: {{ translating }}
-                </md-switch>
-                
-                <md-slider flex ng-show="translating" class="md-primary" md-discrete ng-model="volume" step=".1" min="0" max="1" aria-label="volume"></md-slider>
+            <div class="options" layout="row" layout-margin>
+                <div layout="column">
+                   <md-toolbar>
+                       <div class="md-toolbar-tools">
+                            <h2 class="md-flex">Translating</h2>
+                       </div>
+                    </md-toolbar>
+                    <md-switch ng-model="translating" aria-label="translating">
+                    </md-switch>
+                </div>
+                <div layout="column">
+                   <md-toolbar>
+                       <div class="md-toolbar-tools">
+                            <h2 class="md-flex">Video Volume</h2>
+                       </div>
+                    </md-toolbar>
+                    <md-slider flex ng-show="translating" class="md-primary" md-discrete ng-model="volume" step=".1" min="0" max="1" aria-label="volume"></md-slider>
+                </div>
             </div>
         </div>
             
