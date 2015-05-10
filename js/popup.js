@@ -74,9 +74,6 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
       $scope.$apply();
     }); 
     
-    $scope.send = function(text) {
-      
-    };
     
     $scope.volume = function() {
         
