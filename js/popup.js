@@ -103,6 +103,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         // var recipientEndpoint = $scope.client.getEndpoint({ id: $scope.friendID });
         // $scope.activeCall = recipientEndpoint.startVideoCall(callOptions);
         socket.emit('Call', {"name": $scope.friendID});
+        $scope.toggle();
     };
     
     $scope.hangup = function() {
@@ -117,6 +118,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         var recipientEndpoint = $scope.client.getEndpoint({ id: name });
         $scope.activeCall = recipientEndpoint.startVideoCall(callOptions);
         socket.emit('Answer', '');
+        $scope.toggle();
     }
     
     $scope.toastPosition = {
