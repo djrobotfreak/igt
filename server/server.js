@@ -42,7 +42,7 @@ io.on('connection', function(socket){
 		var client = new Client(socket, data.name, data.language, data.gender);
 		for (var i = 0; i < clientList.length; i++){
 			if (clientList[i].name == data.name){
-				clientList[i].splice(i, 1);
+				clientList.splice(i, 1);
 			}
 		}
 		clientList.push(client);
