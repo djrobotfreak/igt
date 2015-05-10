@@ -91,10 +91,16 @@
             </md-input-container>
             <md-button ng-click="call()" ng-show="!activeCall" aria-label="begin call"><i class="fa fa-phone"></i></md-button>
             <md-button ng-click="hangup()" ng-show="activeCall" aria-label="end call">Hang up</md-button>
+          <md-input-container>
+            <label>Enter message here</label>
+            <input ng-model="message" ng-show="connected"></input>
+          </md-input-container>
+          <md-button ng-click="send()" ng-show="connected" aria-label="send message">Send Message</md-button>
         </div>
 
         <div id="remoteVideoSource"></div>
         <div id="localVideoSource"></div>
+        
         
         <md-switch ng-model="translating" aria-label="translating">
             Translating: {{ translating }}

@@ -5,9 +5,11 @@ var recognition;
 myApp.controller('RespokeController', function($scope, $http, $timeout, socket) {
 
     $scope.connected = false;
+    $scope.translating = false;
     $scope.activeCall = null;
     $scope.username = "";
     $scope.friendId = "";
+    $scope.message = "";
     
     var callOptions = {
         
@@ -17,6 +19,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
         
         onConnect: function(evt) {
             setVideo('remoteVideoSource', evt.element)
+            translating = true;
             evt.element.volume = $scope.volume;
         }
         
@@ -57,6 +60,14 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
         }
         $scope.$apply();
     });
+    
+    $scope.client.listen('send', function(evt) {
+      $scope.$apply();
+    }); 
+    
+    $scope.send = function(text) {
+      
+    };
     
     
     $scope.connect = function() {
