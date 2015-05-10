@@ -17,7 +17,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
         
         onConnect: function(evt) {
             setVideo('remoteVideoSource', evt.element)
-            evt.element.volume = 0.1;
+            evt.element.volume = $scope.volume;
         }
         
     };
