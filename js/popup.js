@@ -85,11 +85,11 @@ myApp.controller('RespokeController', function($scope, $http) {
 
     $scope.translate = function(text){
         console.log('translating text: ', text);
-        $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q="+encodeURI(text)+"&source="+$scope.lang_in+"&target="+$scope.lang_out)
+        $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q="+encodeURI(text)+"&source="+$scope.lang_in.short+"&target="+$scope.lang_out.short)
         .success(function(data){
             console.log('it worked!');
             $scope.output = data.data.translations[0].translatedText;
-            chrome.tts.speak($scope.output, {'lang': $scope.lang_out, 'voiceName': $scope.voice, 'rate': 1.0});
+            chrome.tts.speak($scope.output, {'lang': $scope.lang_out.short, 'voiceName': $scope.voice, 'rate': 1.0});
         })
         .error(function(data){
             console.log('it broke :(');
