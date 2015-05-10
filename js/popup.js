@@ -2,7 +2,7 @@ var myApp = angular.module('myApp',['ngMaterial']);
 var recognition;
 
 
-myApp.controller('RespokeController', function($scope, $http, $timeout) {
+myApp.controller('RespokeController', function($scope, $http, $timeout, socket) {
 
     $scope.connected = false;
     $scope.activeCall = null;
@@ -62,6 +62,17 @@ myApp.controller('RespokeController', function($scope, $http, $timeout) {
     $scope.connect = function() {
         $scope.client.connect({
             endpointId: $scope.username
+        });
+        socket.emit('StartConnection', {
+        name: $scope.username,
+        language: $scope.language,
+        voice: $scope.voice
+        }, function (result) {
+          if (!result) {
+            alert('Connection Not Established');
+          } else {
+            alert('connection established!');
+          }
         });
     };
     
@@ -234,6 +245,33 @@ myApp.filter('langFilt', function(){
         return return_list;
     }
 })
+
+
+
+
+myApp.factory('socket', function ($rootScope) {
+  var socket = io.connect();
+  return {
+    on: function (eventName, callback) {
+      socket.on(eventName, function () {  
+        var args = arguments;
+        $rootScope.$apply(function () {
+          callback.apply(socket, args);
+        });
+      });
+    },
+    emit: function (eventName, data, callback) {
+      socket.emit(eventName, data, function () {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          if (callback) {
+            callback.apply(socket, args);
+          }
+        });
+      })
+    }
+  };
+});
 
 function setVideo(elementId, videoElement) {
     var videoParent = document.getElementById(elementId);
