@@ -112,6 +112,25 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
         $scope.activeCall = recipientEndpoint.startVideoCall(callOptions);
         socket.emit('Answer', '');
     }
+    
+    $scope.toastPosition = {
+    bottom: false,
+    top: true,
+    left: false,
+    right: true
+    };
+      
+    $scope.incomingCall = function() {
+    var toast = $mdToast.simple()
+          .content('You have an incoming call!')
+          .action('Answer')
+          .highlightAction(true)
+          .position($scope.getToastPosition())
+        .hideDelay(8000);
+    $mdToast.show(toast).then(function() {
+        answer();
+    });
+    };
 
     socket.on('Message', function (data) {
         translateAndSpeak(data);
@@ -276,6 +295,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
         });
     }
 });
+
 
 
 myApp.filter('langFilt', function(){
