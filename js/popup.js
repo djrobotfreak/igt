@@ -77,7 +77,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
         socket.emit('StartConnection', {
         name: $scope.username,
         language: $scope.language,
-        voice: $scope.gender
+        gender: $scope.gender
         }, function (result) {
           if (!result) {
             console.log('Connection Not Established');
