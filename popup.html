@@ -38,9 +38,18 @@
         </md-toolbar>
     
         <md-content layout-padding>
-
-
-        <div id="options" layout="row">
+        
+        <div ng-show="!connected">
+                    <md-input-container>
+               <label>Username</label>
+              <input ng-model="username">
+            </md-input-container>
+            <md-button class="md-primary md-raised" ng-click="connect()">Connect</md-button>
+        </div>
+       
+        <div ng-show="connected">
+           
+                   <div id="options" layout="row">
            <div layout="column">
                 <md-toolbar>
                    <div class="md-toolbar-tools">
@@ -73,16 +82,8 @@
             </div>
              
         </div>
-        
-        <div ng-show="!connected">
-                    <md-input-container>
-               <label>Username</label>
-              <input ng-model="username">
-            </md-input-container>
-            <md-button class="md-primary md-raised" ng-click="connect()">Connect</md-button>
-        </div>
-       
-        <div ng-show="connected">
+           
+           
             <md-input-container>
                 <label>User to Call</label>
                 <input ng-model="friendID" ng-show="!activeCall">
