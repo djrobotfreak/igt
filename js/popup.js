@@ -102,8 +102,42 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
     
     $scope.hangup = function() {
         $scope.activeCall.hangup();
+        socket.emit('HangUp', ""
+        );
         $scope.activeCall = null;
     };
+
+    $scope.answer = function(data){
+        var recipientEndpoint = $scope.client.getEndpoint({ id: data.name });
+        $scope.activeCall = recipientEndpoint.startVideoCall(callOptions);
+        socket.emit('Answer', '');
+    }
+
+    socket.on('Message', function (data) {
+        translateAndSpeak(data);
+    });
+
+    socket.on('IncomingCall', function(data){
+        $scope.incomingName = data.name;
+    });
+
+    socket.on('DroppedCall', function(data){
+        $scope.activeCall.hangup();
+        $scope.activeCall = null;
+    })
+
+
+    function translateAndSpeak(data){
+        $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q="+encodeURI(data.content)+"&source="+data.lang_in+"&target="+data.lang_out)
+        .success(function(data){
+            $scope.output = data.data.translations[0].translatedText;
+            chrome.tts.speak($scope.output, {'lang': data.lang_out, 'voiceName': data.voice, 'rate': 1.0});
+        })
+        .error(function(data){
+            console.log('translation failed');
+        });
+    }
+
 
     $scope.translate = function(text){
         console.log('translating text: ', text);
@@ -117,6 +151,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
             console.log('it broke :(');
         });
     }
+
     var last_transcript = "";
     var recognizing = false;
     function setup(){
@@ -158,9 +193,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
           };
 
           recognition.onend = function() {
-            // recognizing = false;
-            // console.log("I'm ending");
-            recognition.start();
+          recognition.start();
           };
           var timout;
           recognition.onresult = function(event) {
@@ -176,18 +209,12 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
               if (event.results[i].isFinal) {
                 final_transcript += event.results[i][0].transcript;
                 interim_transcript = '';
-                // console.log(event.results[i][0].transcript);
               } else {
                 interim_transcript = event.results[i][0].transcript;
-                // console.log(event.results[i][0].transcript);
               }
             }
-            // console.log(final_transcript);
             final_transcript = capitalize(final_transcript);
             $scope.transcript = interim_transcript;
-            // final_span.innerHTML = linebreak(final_transcript);
-            // interim_span.innerHTML = linebreak(interim_transcript);
-
             timout = $timeout(function(){
                 if (last_transcript){
                     var ndx = $scope.transcript.indexOf(last_transcript.slice(last_transcript.length < 20 ? 0 : last_transcript.length-20,  last_transcript.length));
@@ -197,7 +224,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
                     }
                 }
                 if ($scope.transcript){
-                    $scope.translate($scope.transcript);
+                    $scope.send($scope.transcript);
 
                     // last_transcript = $scope.transcript;
                     interim_transcript = '';
@@ -211,29 +238,43 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket) 
             // }
           };
         }
-        
-
         var two_line = /\n\n/g;
         var one_line = /\n/g;
         function linebreak(s) {
           return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
         }
-
         var first_char = /\S/;
         function capitalize(s) {
           return s.replace(first_char, function(m) { return m.toUpperCase(); });
         }
     }
+
     setup();
+    
+
     $scope.toggle = function() {
-          if (!recognizing) {
+        if (!recognizing) {
             recognition.lang = 'es-MX';
             recognition.start();
             return;
-          }
-          recognition.stop();
-          recognizing = true;
         }
+        recognition.stop();
+        recognizing = true;
+    }
+
+
+
+    $scope.send = function(transcript){
+        socket.emit('StartConnection', {
+            content: transcript,
+        }, function (result) {
+          if (!result) {
+            console.log('Message Sent');
+          } else {
+            console.log('Message Failed');
+          }
+        });
+    }
 });
 
 
