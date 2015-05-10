@@ -109,8 +109,9 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         $scope.activeCall = null;
     };
 
-    $scope.answer = function(data){
-        var recipientEndpoint = $scope.client.getEndpoint({ id: data.name });
+    $scope.answer = function(name){
+        console.log('Im calling: ', name);
+        var recipientEndpoint = $scope.client.getEndpoint({ id: name });
         $scope.activeCall = recipientEndpoint.startVideoCall(callOptions);
         socket.emit('Answer', '');
     }

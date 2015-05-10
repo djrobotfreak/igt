@@ -77,7 +77,7 @@ io.on('connection', function(socket){
 			callList.push(call);
 			receiver.call = call;
 			caller.call = call;
-			receiver.socket.emit("IncomingCall", JSON.stringify({"name": caller.name}));
+			receiver.socket.emit("IncomingCall", {"name": caller.name});
 		}
 		else{
 			socket.emit('CallDropped', '');
