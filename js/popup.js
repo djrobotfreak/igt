@@ -226,21 +226,21 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
 
           recognition.onerror = function(event) {
             if (event.error == 'no-speech') {
-              start_img.src = 'images/mic.gif';
-              showInfo('info_no_speech');
+              // start_img.src = 'images/mic.gif';
+              // showInfo('info_no_speech');
               ignore_onend = true;
             }
             if (event.error == 'audio-capture') {
-              start_img.src = 'images/mic.gif';
-              showInfo('info_no_microphone');
+              // start_img.src = 'images/mic.gif';
+              // showInfo('info_no_microphone');
               ignore_onend = true;
             }
             if (event.error == 'not-allowed') {
-              if (event.timeStamp - start_timestamp < 100) {
-                showInfo('info_blocked');
-              } else {
-                showInfo('info_denied');
-              }
+              // if (event.timeStamp - start_timestamp < 100) {
+                // showInfo('info_blocked');
+              // } else {
+                // showInfo('info_denied');
+              // }
             }
           };
 
