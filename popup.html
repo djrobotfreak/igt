@@ -40,25 +40,48 @@
         <md-content layout-padding>
 
 
+        <div id="options" layout="row">
+            <div layout="column">
+               <md-toolbar>
+                   <div class="md-toolbar-tools">
+                        <h2 class="md-flex">From</h2>
+                   </div>
+                </md-toolbar>
+                <md-select placeholder="select" ng-model="lang_out">
+                    <md-option ng-repeat="item in languages">{{item.name}}</md-option>
+                </md-select>
+            </div>
+            <div layout="column">
+                <md-toolbar>
+                   <div class="md-toolbar-tools">
+                        <h2 class="md-flex">To</h2>
+                   </div>
+                </md-toolbar>
+                <md-select placeholder="select" ng-model="lang_in">
+                    <md-option ng-repeat="item in languages">{{item.name}}</md-option>
+                </md-select>
+            </div>
+            <div layout="column" ng-show="lang_out && lang_in">
+                <md-toolbar>
+                   <div class="md-toolbar-tools">
+                        <h2 class="md-flex">Voice</h2>
+                   </div>
+                </md-toolbar>
+                <md-select placeholder="select" ng-model="voice"> 
+                    <md-option ng-repeat="item in voices | langFilt:lang_out">{{item.voiceName}}</md-option>
+                </md-select>
+            </div>
+             
+        </div>
+        
         <div ng-show="!connected">
-            <md-select ng-model="lang_out">
-                <md-option ng-repeat="item in languages">{{item.name}}</md-option>
-            </md-select>
-            <md-select ng-model="lang_in">
-
-                <md-option ng-repeat="item in languages">{{item.name}}</md-option>
-            </md-select>
-            <md-select ng-model="voice"> 
-<!--            item.voiceName as item.voiceName for item in voices-->
-                <md-option ng-repeat="item in voices | langFilt:lang_out">{{item.voiceName}}</md-option>
-            </md-select>
-            <md-input-container>
-              <label>Username</label>
+                    <md-input-container>
+               <label>Username</label>
               <input ng-model="username">
             </md-input-container>
             <md-button class="md-primary md-raised" ng-click="connect()">Connect</md-button>
         </div>
-
+       
         <div ng-show="connected">
             <md-input-container>
                 <label>User to Call</label>
