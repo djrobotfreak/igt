@@ -102,14 +102,14 @@ io.on('connection', function(socket){
 				callList[i].caller.socket.emit("DroppedCall");
 				callList[i].caller.call = undefined;
 				callList[i].receiver.call = undefined;
-				call.delete();
+				callList.splice(i, 1);
 				break;
 			}
 			else if(callList[i].caller.socket == socket){
 				callList[i].receiver.socket.emit("DroppedCall");
 				callList[i].caller.call = undefined;
 				callList[i].receiver.call = undefined;
-				call.delete();
+				callList.splice(i, 1);
 				break;
 			}
 		}
@@ -119,10 +119,12 @@ io.on('connection', function(socket){
 		for (var i = 0; i < callList.length; i++){
 			if (socket == callList[i].receiver.socket){
 				callList[i].caller.socket.emit('Messasge', {"content":data.content, "lang_from":callList[i].caller.language, "lang_to":callList[i].receiver.language, "gender": callList[i].caller.gender});
+				console.log('Sending Message to', callList[i].caller.name);
 				break;
 			}
 			else if (socket == callList[i].caller.socket){
 				callList[i].receiver.socket.emit('Messasge', {"content":data.content, "lang_from":callList[i].receiver.language, "lang_to":callList[i].caller.language, "gender": callList[i].receiver.gender});
+				console.log('Sending Message to', callList[i].receiver.name);
 				break;
 			}
 		}
@@ -140,9 +142,8 @@ io.on('connection', function(socket){
 					}
 					clientList[i].call.caller.call = undefined;
 					clientList[i].call.receiver.call = undefined;
-					call.delete();
 				}
-				clientList[i].delete();
+				clientList.splice(i, 1);
 				return;
 			}
 		}

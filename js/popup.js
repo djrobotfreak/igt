@@ -160,7 +160,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     };
 
     socket.on('Message', function (data) {
-        console.log('Incoming Message', data.content);
+        console.log('Incoming Message', data);
         translateAndSpeak(data);
     });
 
