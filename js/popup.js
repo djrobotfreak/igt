@@ -88,6 +88,9 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     };
     
     $scope.disconnect = function() {
+        if ($scope.activeCall){
+            $scope.hangup();
+        }
         $scope.client.disconnect({
             endpointId: $scope.username
         });
@@ -146,7 +149,12 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     });
 
     socket.on('IncomingCall', function(data){
-        $scope.incomingCall(data.name);
+        if ($scope.connected){
+            $scope.incomingCall(data.name);
+        }
+        else{
+            socket.emit('HangUp', '');
+        }
     });
 
     socket.on('DroppedCall', function(data){
