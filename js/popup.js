@@ -184,6 +184,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         $http.get("https://www.googleapis.com/language/translate/v2?key=AIzaSyA-CYOljOaH_9kRWZ2yOhSd0Ra4FHkAyZQ&q="+encodeURI(data.content)+"&source="+data.lang_in+"&target="+data.lang_out)
         .success(function(data){
             $scope.output = data.data.translations[0].translatedText;
+            console.log('Translated Text: ', $scope.output);
             chrome.tts.speak($scope.output, {'lang': data.lang_out, 'gender': data.gender, 'rate': 1.0});
         })
         .error(function(data){
@@ -307,7 +308,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
 
     setup();
     $scope.stopRecognition = function(){
-        if (regognizing){
+        if (recognizing){
             recognition.stop();
         }
     }
