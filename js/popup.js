@@ -154,6 +154,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     };
 
     socket.on('Message', function (data) {
+        console.log('Incoming Message', data.content);
         translateAndSpeak(data);
     });
 
@@ -299,7 +300,12 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
 
     $scope.toggle = function() {
         if (!recognizing) {
-            recognition.lang = 'es-MX';
+            if ($scope.language == 'es'){
+                recognition.lang = 'es-MX';
+            }
+            else if ($scope.language == 'en'){
+                recognition.lang = 'en-US';
+            }
             recognition.start();
             return;
         }
