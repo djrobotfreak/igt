@@ -101,6 +101,9 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     };
     
     $scope.disconnect = function() {
+        if ($scope.activeCall){
+            $scope.hangup();
+        }
         $scope.client.disconnect({
             endpointId: $scope.username
         });
@@ -113,6 +116,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         // var recipientEndpoint = $scope.client.getEndpoint({ id: $scope.friendID });
         // $scope.activeCall = recipientEndpoint.startVideoCall(callOptions);
         socket.emit('Call', {"name": $scope.friendID});
+        $scope.toggle();
     };
     
     $scope.hangup = function() {
@@ -122,11 +126,12 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         $scope.activeCall = null;
     };
 
-    $scope.answer = function(data){
-        var recipientEndpoint = $scope.client.getEndpoint({ id: data.name });
+    $scope.answer = function(name){
+        console.log('Im calling: ', name);
+        var recipientEndpoint = $scope.client.getEndpoint({ id: name });
         $scope.activeCall = recipientEndpoint.startVideoCall(callOptions);
         socket.emit('Answer', '');
-        
+        $scope.toggle();
     }
     
     $scope.toastPosition = {
@@ -153,7 +158,12 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
     });
 
     socket.on('IncomingCall', function(data){
-        $scope.incomingCall(data.name);
+        if ($scope.connected){
+            $scope.incomingCall(data.name);
+        }
+        else{
+            socket.emit('HangUp', '');
+        }
     });
 
     socket.on('DroppedCall', function(data){

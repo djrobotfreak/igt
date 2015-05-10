@@ -42,7 +42,7 @@ io.on('connection', function(socket){
 		var client = new Client(socket, data.name, data.language, data.gender);
 		for (var i = 0; i < clientList.length; i++){
 			if (clientList[i].name == data.name){
-				clientList[i].splice(i, 1);
+				clientList.splice(i, 1);
 			}
 		}
 		clientList.push(client);
@@ -77,7 +77,7 @@ io.on('connection', function(socket){
 			callList.push(call);
 			receiver.call = call;
 			caller.call = call;
-			receiver.socket.emit("IncomingCall", JSON.stringify({"name": caller.name}));
+			receiver.socket.emit("IncomingCall", {"name": caller.name});
 		}
 		else{
 			socket.emit('CallDropped', '');
@@ -87,16 +87,17 @@ io.on('connection', function(socket){
 		console.log('sombody answered the call');
 		for (var i = 0; i < callList.length; i++){
 			if(callList[i].receiver.socket == socket){
+				console.log('callList', callList[i]);
 				callList[i].status = 'connected';
 				socket.emit('Connected','');
-				callList[i].sender.socket.emit('Connected', '');
+				callList[i].caller.socket.emit('Connected', '');
 				break;
 			}
 		}
 	});
 	socket.on('HangUp', function(data){
 		console.log('Somebody hung up');
-		for(var i = 0; i < callList[i].length; i++){
+		for(var i = 0; i < callList.length; i++){
 			if (callList[i].receiver.socket == socket){
 				callList[i].caller.socket.emit("DroppedCall");
 				callList[i].caller.call = undefined;
@@ -117,11 +118,11 @@ io.on('connection', function(socket){
 		console.log('got a message', data.content)
 		for (var i = 0; i < callList.length; i++){
 			if (socket == callList[i].receiver.socket){
-				callList[i].caller.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].caller.language, "lang_to":callList[i].receiver.language, "gender": callList[i].caller.gender}));
+				callList[i].caller.socket.emit('Messasge', {"content":data.content, "lang_from":callList[i].caller.language, "lang_to":callList[i].receiver.language, "gender": callList[i].caller.gender});
 				break;
 			}
 			else if (socket == callList[i].caller.socket){
-				callList[i].receiver.socket.emit('Messasge', JSON.stringify({"content":data.content, "lang_from":callList[i].receiver.language, "lang_to":callList[i].caller.language, "gender": callList[i].receiver.gender}));
+				callList[i].receiver.socket.emit('Messasge', {"content":data.content, "lang_from":callList[i].receiver.language, "lang_to":callList[i].caller.language, "gender": callList[i].receiver.gender});
 				break;
 			}
 		}
