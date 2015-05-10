@@ -23,6 +23,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         
         onConnect: function(evt) {
             setVideo('remoteVideoSource', evt.element)
+            evt.element.volume = 0;
             connectVideo = evt.element;
             $scope.translating = true;
         }
@@ -58,7 +59,6 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
         {
             $scope.activeCall.answer(callOptions);
             $scope.activeCall.listen('hangup', function() {
-                connectVideo.volume = $scope.volume;
                 $scope.activeCall = null;
                 $scope.$apply();
             });
@@ -219,6 +219,7 @@ myApp.controller('RespokeController', function($scope, $http, $timeout, socket, 
 
           recognition.onstart = function() {
             recognizing = true;
+            connectVideo.volume = 0;
             // showInfo('info_speak_now');
             // start_img.src = 'images/mic-animate.gif';
           };
