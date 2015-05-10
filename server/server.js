@@ -2,8 +2,8 @@ console.log('Im starting');
 // Load the SDK and UUID
 var uuid = require('node-uuid');
 var io = require('socket.io');
- var express = require('express');
- var app = express()
+var express = require('express');
+var app = express();
 var server = require('http').createServer(app)
   , io = io.listen(server);
 // The node.js HTTP server.
@@ -36,8 +36,8 @@ io.on('connection', function(socket){
 	socket.on('StartConnection', function (data) 
 	{
 		console.log('start');
-		console.log('name', name);
-		unpairedList.push(new Client(socket, data.name));
+		console.log('name', data.name);
+		unpairedList.push(new Client(socket, data.name, data.language, data.voice));
 		player1.socket.emit('Hello', "");
 		// else{
 		// 	var client = new Client(false, socket);
