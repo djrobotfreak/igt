@@ -38,26 +38,35 @@
         </md-toolbar>
     
         <md-content layout-padding>
-
-
-        <div id="options" layout="row">
-            <div layout="column">
-               <md-toolbar>
+        
+        <div ng-show="!connected">
+                    <md-input-container>
+               <label>Username</label>
+              <input ng-model="username">
+            </md-input-container>
+            <md-button class="md-primary md-raised" ng-click="connect()">Connect</md-button>
+        </div>
+       
+        <div ng-show="connected">
+           
+                   <div id="options" layout="row">
+           <div layout="column">
+                <md-toolbar>
                    <div class="md-toolbar-tools">
                         <h2 class="md-flex">From</h2>
                    </div>
                 </md-toolbar>
-                <md-select placeholder="select" ng-model="lang_out">
+                <md-select placeholder="select" ng-model="lang_in">
                     <md-option ng-repeat="item in languages">{{item.name}}</md-option>
                 </md-select>
             </div>
             <div layout="column">
-                <md-toolbar>
+               <md-toolbar>
                    <div class="md-toolbar-tools">
                         <h2 class="md-flex">To</h2>
                    </div>
                 </md-toolbar>
-                <md-select placeholder="select" ng-model="lang_in">
+                <md-select placeholder="select" ng-model="lang_out">
                     <md-option ng-repeat="item in languages">{{item.name}}</md-option>
                 </md-select>
             </div>
@@ -73,16 +82,8 @@
             </div>
              
         </div>
-        
-        <div ng-show="!connected">
-                    <md-input-container>
-               <label>Username</label>
-              <input ng-model="username">
-            </md-input-container>
-            <md-button class="md-primary md-raised" ng-click="connect()">Connect</md-button>
-        </div>
-       
-        <div ng-show="connected">
+           
+           
             <md-input-container>
                 <label>User to Call</label>
                 <input ng-model="friendID" ng-show="!activeCall">
@@ -94,11 +95,16 @@
         <div id="remoteVideoSource"></div>
         <div id="localVideoSource"></div>
         
-        <button ng-click="toggle()"> start listening</button>
-        {{transcript}}
-        <button ng-click="testTranslate()">Test Translate</button>
-        <p>{{output}}</p>
+        <md-switch ng-model="translating" aria-label="translating">
+            Translating: {{ translating }}
+        </md-switch>
+        
+        <md-slider ng-show="translating" class="md-primary" md-discrete ng-model="volume" step="1" min="1" max="10" aria-label="volume">
+        </md-slider>
         </md-content>
+        <md-button ng-click="toggle()"> start listening</button>
+        <p>{{transcript}}</p>
+        <p>{{output}}</p>
     </div>
             <!-- <div class="compact marquee">
             <div id="info">
